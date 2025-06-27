@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+
+<html>
+
+<!-- Mirrored from www.finology.in/Calculators/Invest/Fixed-Deposit-Calculator.aspx by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Jun 2025 12:04:01 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head><title>
+	Fixed Deposit interest rate, FD interest calculator
+</title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><link rel="stylesheet" href="../../../stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" /><link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600|Roboto:100,400" rel="stylesheet" />
+    <script defer src="../../../use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" /><link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/aos/2.3.2/aos.css" /><link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css" />
+    <link href="../css/finologymain3cfd.css?v=200720v1" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" /><link rel="stylesheet" type="text/css" href="../../../cdn.jsdelivr.net/gh/fitodac/bsnav%40master/dist/bsnav.min.css" />
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="application-name" content="Finology" /><meta name="apple-mobile-web-app-title" content="Finology" /><meta name="theme-color" content="#0054D1" /><meta name="msapplication-navbutton-color" content="#0054D1" /><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /><meta name="msapplication-starturl" content="/" />
+    <link rel="apple-touch-icon" sizes="57x57" href="../images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/icons/favicon-16x16.png">
+    
+    <link rel="stylesheet" type="text/css" href="../../../www.chartjs.org/samples/latest/style.html">
+    <meta name="keywords" content="FD interest rate,FD calculator,FD interest calculator,FD calculator Monthly Interest,Fixed deposit calculator,FD interest rate calculator,FD rates,Fixed deposit rates" />
+    <meta name="description" content="FD Calculator calculates the FD interest rate based on lump sum amount invested for a fixed period of time. Free FD interest Calculator by Finology." />
+     <style>
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+         .logo {
+            text-align: center;
+            font-size: 1.8rem !important;
+            text-decoration: none;
+            margin: 0 auto;
+        }
+    </style>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136614031-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-136614031-3');
+    </script>
+<style>
+        .bg-primary-50 {
+            background-color: #000000;
+        }
+
+        .c-white {
+            color: #ffffff;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .flex-container {
+            display: flex;
+        }
+
+        .flex-align-center {
+            align-items: center;
+        }
+
+        .flex-container {
+            display: flex;
+        }
+
+        .border1 {
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .br1 {
+            border-radius: 1rem;
+        }
+
+        .p2 {
+            padding: 2rem;
+        }
+
+        .p5 {
+            padding: 5rem;
+        }
+
+        .br05 {
+            border-radius: 0.5rem;
+        }
+
+        .bg-1 {
+            background-color: #01FF66;
+        }
+
+        .fw700 {
+            font-weight: 700;
+        }
+
+        .c-primary {
+            color: #000000;
+        }
+
+        .pr15 {
+            padding-right: 1.5rem;
+        }
+
+        .pl15 {
+            padding-left: 1.5rem;
+        }
+
+        .p1 {
+            padding: 1rem;
+        }
+
+        .cta p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        .textblack {
+            color: #000000 !important;
+        }
+
+        @media (max-width: 600px) {
+            .footer .cta {
+                flex-direction: column;
+                text-align:center;
+            }
+
+            .flex-container {
+                flex-direction: column;
+            }
+
+            .footer .cta img {
+                width: 40%;
+            }
+
+            .footer .cta {
+                flex-direction: column;
+            }
+
+            .p5 {
+                padding: 0rem;
+            }
+
+            .pl125 {
+                padding-left: 1.25rem
+            }
+
+            .footer .cta .col-9 p {
+                margin-bottom: 2rem;
+            }
+
+            .pr15 {
+                padding-right: 1.5rem;
+            }
+
+            .pl15 {
+                padding-left: 1.5rem;
+            }
+
+            .p1 {
+                padding: 1rem;
+            }
+
+            .text-nounder {
+                text-decoration: none;
+            }
+
+            .cta h4 {
+                font-size: 1.25rem !important;
+                font-weight: 600;
+            }
+
+            .cta p {
+                font-size: 1rem;
+                line-height: 1.5rem;
+            }
+
+            .br05 {
+                border-radius: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="https://www.finology.in/Calculators/Invest/Fixed-Deposit-Calculator.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="frmwww">
+<div class="aspNetHidden">
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="++14YMGPo1eVYG6ZE1oRLd7hxrvw9soSqMMBaDpjGP8UStc9t3qZFpSaATB2heyr7kKrNHrqYQ5qRcK1Uw8vrTib4cUubFW1AQ/Pu4yAdIMrjyeKxPW2he+iW2MncIeVl24Tuw==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['frmwww'];
+if (!theForm) {
+    theForm = document.frmwww;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="../WebResource6207.js?d=pynGkmcFUV13He1Qd6_TZNhCHZcsUTJ-S8S5H22PuHXzkI0Ps5RGj_6D301-YWhGqNghCQ2&amp;t=637814653746327080" type="text/javascript"></script>
+
+
+<script src="../WebResource98cc.js?d=x2nkrMJGXkMELz33nwnakL1P-NlylcybSIvjogLXY4rJMPsfz2EgFfGOdXEdHnxccx8426lMfDdDABcbRviUVL3eN6M1&amp;t=637814653746327080" type="text/javascript"></script>
+<script src="../WebResourcedbf7.js?d=JoBkLzP19aTuxbWOhHobYrcvjw1xtV-RU1FrPNwKy2hQktDTMkCyk8mHZvcWsI5SCKDyGQ2&amp;t=637814653746327080" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="01656029" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="KRM94qBlc8gE5FOo8SYPBjo6zr7ZJOfqVYxHgfilc+zwyOvZ+6vTxAy9Fz6fbYdP4JcC/FwDcH44hF1Y5BWy6LcRjG+H7g0lmV+PpQSZO7XZmcv/2Ygq5VORQe8QYeG2o6XG7t2JyUdok5mkE9LyEF9MUyaepPcZOmYg/q+XSiyV3pdgLbiDZ6bXtwpc8VQqzlQ5+uCbFbTg05BMTU6pG/h8G4izIvuEBnj1Do2KPYYiiRzumfqTxo2t+Ds1Bu/Rb3wRyvKaZM5pJ8s+Dyx7i5u/reU=" />
+</div>
+       
+        <div class="navbar navbar-expand-sm bsnav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.html">
+                    <img src="../images/finology-logo.svg" class="img-fluid" />
+                </a>
+                <button type="button" class="navbar-toggler toggler-spring"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse justify-content-sm-end">
+                    <ul class="navbar-nav navbar-mobile mr-0 mt-5 mt-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../index.html">Home<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../subscribe.html">Finology Subscriptions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href='https://ticker.finology.in/'>Ticker</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href='https://recipe.finology.in/'>Recipe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href='https://quest.finology.in/'>Quest</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href='https://select.finology.in/'>Select</a>
+                        </li>
+                     
+                        <li class="nav-item">
+                            <a class="nav-link" href='https://insider.finology.in/'>Insider</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        
+    <div class="container-fluid mt-md-5 pt-md-5 text-center">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="abtheading">FIXED DEPOSIT CALCULATOR</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-md-2 calculatorinner">
+        <div class="row px-0 px-md-5">
+            <div class="col-12 col-md-7 order-1 order-md-0">
+                <p>Wish to calculate the returns on your FD? Calculate the amount that you would receive at the end with added interest using our Fixed Deposit Calculator.</p>
+                <hr />
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <span class="txtsize">Compounding Frequency:<span class="text-danger font-weight-bold">*</span><small class="txtsize">(Up to 50 years)</small></span>
+                        <select name="ctl00$pageContent$ddlCompoundingFrequency" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$pageContent$ddlCompoundingFrequency\&#39;,\&#39;\&#39;)&#39;, 0)" id="pageContent_ddlCompoundingFrequency" class="form-control" required="">
+	<option selected="selected" value="1">Yearly</option>
+	<option value="2">Half-Yearly</option>
+	<option value="4">Quarterly</option>
+	<option value="12">Monthly</option>
+
+</select>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="txtsize">Amount Deposited <span class="text-danger font-weight-bold">*
+                        </span>
+                        </span>
+                        <input name="ctl00$pageContent$txtAmountDeposited" type="text" autocomplete="off" id="pageContent_txtAmountDeposited" required="" class="form-control CurrencyMax" min="1000" placeholder="Ex: 1000" onkeyup="word.innerHTML=convertNumberToWords(this.value)" />
+                        <div id="word" class="wording"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <span class="txtsize">Tenure In years<span class="text-danger font-weight-bold">*</span><small class="txtsize">(Up to 50 years)</small></span>
+                        <input name="ctl00$pageContent$txtTenure" type="text" autocomplete="off" maxlength="2" id="pageContent_txtTenure" required="" class="form-control CurrencyNew" placeholder="Ex: 10" />
+                        <span id="pageContent_RegularExpressionValidator1" style="color:Red;visibility:hidden;">Only numbers allowed</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="txtsize">Interest Rate(P.A) <span class="text-danger font-weight-bold">*</span>
+                        </span>
+                        <input name="ctl00$pageContent$txtinterest" type="text" autocomplete="off" id="pageContent_txtinterest" required="" class="form-control PerTxt Currency" placeholder="Ex: 12%" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <span id="pageContent_lblError" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="submit" name="ctl00$pageContent$btnSubmit" value="Calculate My FD" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$pageContent$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="pageContent_btnSubmit" class="btn btn-primary btn-lg" />
+                        &nbsp;&nbsp;
+                    </div>
+                </div>
+                <hr />
+                
+            </div>
+            <div class="col-12 col-md-5 order-0 order-md-1">
+                <img src="../images/CalculatorImage/FD.png" class="img-fluid imgsize" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-md-5 pt-md-5 text-center">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="abtheading">About Finology Fixed Deposit Calculator</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-md-5 mx-auto" style="max-width: 90%;">
+        <div class="row">
+            <div class="col-12">
+                <p><strong>1) What is Fixed Deposit?</strong></p>
+                <p>
+                    <strong>Fixed deposit</strong>is an investment instrument that is offered by banks and NBFCs, where we can deposit our money earning a higher rate of interest than savings accounts. This FD calculator can help you know the maturity amount you will earn by opening a FD account.
+                </p>
+                <p>
+                    <strong>2) What are the benefits of Fixed Deposit?
+                    </strong>
+                </p>
+                <p>There are various benefits of fixed deposit. Some are:</p>
+                <ul>
+                    <li>Better FD interest rate than normal savings account.
+                    </li>
+                    <li>Acts as a safe investment option.
+                    </li>
+                    <li>Provide generally 7-8% of fixed returns for the period.
+                    </li>
+                    <li>Good option for conservative investors.
+                    </li>
+                </ul>
+                <p><strong>3) What is the time period for Fixed Deposit?</strong></p>
+                <p>In FDs one has to lock in a sum of money for a fixed time period. The tenure can range from minimum 7 days to a maximum of 10 years. Various financial institution provides FD of different maturities and interest rate. The Longer the maturity, higher will be the <strong>FD interest rates.</strong></p>
+                <p><strong>4) How much can we invest in FD?</strong></p>
+                <p>The investment amount in FD varies among different financial institutions. Some banks have the facility that we can start a FD by Rs 1000 also, while some banks allow the minimum amount to be Rs 20000. There is no limit on maximum amount which we can invest in the Fixed Deposit.</p>
+                <p><strong>5) How is the Fixed Deposit interest rate calculated?</strong></p>
+                <p>The <strong>FD interest rate</strong> is calculated based on the tenure of the FD. It is compounded monthly, quarterly, yearly based on the type of option we choose. One does not need to dive into formula of how to calculate <strong>Fixed deposit rate</strong> We can directly use the FD interest rate calculator made by finology and enter the sum we want to invest and the tenure, then the interest rate calculator will provide the result of maturity amount and the interest earned.</p>
+                <p><strong>6) Are interest on Fixed Deposits taxable?</strong></p>
+                <p>Yes, the <strong>FD interest rate</strong> is taxable as per the Income Tax Act 1961. The tax applicable on FD is deducted at the source by the banks. However, if your total income doesn’t exceed the minimum tax slab then you can avoid the TDS charges by banks on FD by submitting a declaration under section 197A of the Income Tax Act in Form 15-G or 15-H, whichever is applicable.</p>
+                <p><strong>7) Can we get monthly interest on Fixed deposit?</strong></p>
+                <p>Yes, we can opt <strong>FD calculator monthly interest</strong> if we want but that will reduce our maturity value as we can earn more by reinvesting the interest and compounding of it.</p>
+                <p><strong>8) How to use this calculator?</strong></p>
+                <p>We have made a <strong>FD calculator</strong> which calculate <strong>FD interest rate </strong>and help you know your maturity and interest amount quickly without any formulas. You just need to enter the amount deposited in the FD, the <strong>Interest rate </strong>which is offered and the tenure of Fixed Deposit. After providing these values our calculator will show the amount which you will get at maturity and the total interest which is earned on it through quarterly compounding. </p>
+            </div>
+        </div>
+    </div>
+
+
+            <div class="p5 footer cta flex-container flex-wrap">
+                <div class="col-12 p2 bg-primary-50 border1 border-primary-light br1 mt-1 flex-align-center flex-container">
+                    <img class="col-6 col-md-3 m-2" src="../../image/finology-301.svg"/>
+                    <div class="col-12 col-md-9 pl12 c-white">
+                        <h4>Subscription for Investors</h4>
+                        <p class="mt-3 mb-3">30 stocks for the long-term, 50+ investing concepts, premium valuation tools and much more await you with Finology Subscription!</p>
+                        <a href="../../subscribe.html"" class="bg-1 fw700 d-inline-block text-nounder textblack p1 pl15 pr15 br05">View Plans</a>
+                    </div>
+                </div>
+            </div>
+        <section class="footer">
+           
+            <div class="container">
+                <div class="row justify-content-center footerrow">
+                    <div class="col-6 col-md-3">
+                        <h6>Finology</h6>
+                        <a href="../../about-us.html">About us</a>
+                        <a href="../../team.html">Team</a>
+                        <a href="../../privacy.html">Privacy Policy</a>
+                        <a href="../../terms.html">Terms &amp; Conditions</a>
+                        <a href="../../refunds.html">Returns &amp; Refunds</a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <h6>Whats New</h6>
+                        <a href="../../subscribe.html">Finology Subscriptions</a>
+                        <a href="https://recipe.finology.in/">Recipe</a>
+                        <a href="https://quest.finology.in/">Quest</a>
+                        <a href="https://ticker.finology.in/">Ticker</a>
+                        <a href="https://select.finology.in/">Select</a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <h6>Top Calculators</h6>
+                        <a href="Lumpsum-Calculator.html">Lumpsum Calculator</a>
+                        <a href="SIP-Calculator.html">SIP Calculator</a>
+                        <a href="StepUp-Calculator.html">Step-up Calculator</a>
+                        <a href="DCF-Calculator.html">DCF Calculator</a>
+                        <a href="Goal-planning-SIP.html">Goal Planning - SIP Calculator</a>
+
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        <div class="bsnav-mobile">
+            <div class="bsnav-mobile-overlay"></div>
+            <div class="navbar">
+                <div class="masterbarmobile"></div>
+            </div>
+        </div>
+
+      
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("pageContent_RegularExpressionValidator1"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var pageContent_RegularExpressionValidator1 = document.all ? document.all["pageContent_RegularExpressionValidator1"] : document.getElementById("pageContent_RegularExpressionValidator1");
+pageContent_RegularExpressionValidator1.controltovalidate = "pageContent_txtTenure";
+pageContent_RegularExpressionValidator1.errormessage = "Only numbers allowed";
+pageContent_RegularExpressionValidator1.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+pageContent_RegularExpressionValidator1.validationexpression = "\\d+";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        WebForm_AutoFocus('pageContent_ddlCompoundingFrequency');//]]>
+</script>
+</form>
+
+    <script src="../../../code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="../../../stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/aos/2.3.2/aos.js"></script>
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
+    <script src="../js/bsnav.min.js"></script>
+
+    <script>
+        AOS.init();
+        $('.navbar-toggler').click(function () {
+            $('.bsnav-mobile .navbar .masterbarmobile').html($(".masterbar").html());
+        });
+
+    </script>
+    
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
+    <script src="../../../cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="Calculators/js/util.html"></script>
+
+    <script>
+        AutoNumeric.multiple('.Currency', { allowDecimalPadding: false, digitalGroupSpacing: "2", minimumValue: 0 });
+
+        AutoNumeric.multiple('.CurrencyNew', { allowDecimalPadding: false, digitalGroupSpacing: "2", minimumValue: 0.1, maximumValue: 50 });
+        //anElement78.options.decimalPlaces = 0;
+        AutoNumeric.multiple('.CurrencyMax', { allowDecimalPadding: false, digitalGroupSpacing: "2", minimumValue: 1, maximumValue: 100000000 });
+    </script>
+
+    <script>
+        function convertNumberToWords(amount) {
+            var words = new Array();
+            words[0] = '';
+            words[1] = 'One';
+            words[2] = 'Two';
+            words[3] = 'Three';
+            words[4] = 'Four';
+            words[5] = 'Five';
+            words[6] = 'Six';
+            words[7] = 'Seven';
+            words[8] = 'Eight';
+            words[9] = 'Nine';
+            words[10] = 'Ten';
+            words[11] = 'Eleven';
+            words[12] = 'Twelve';
+            words[13] = 'Thirteen';
+            words[14] = 'Fourteen';
+            words[15] = 'Fifteen';
+            words[16] = 'Sixteen';
+            words[17] = 'Seventeen';
+            words[18] = 'Eighteen';
+            words[19] = 'Nineteen';
+            words[20] = 'Twenty';
+            words[30] = 'Thirty';
+            words[40] = 'Forty';
+            words[50] = 'Fifty';
+            words[60] = 'Sixty';
+            words[70] = 'Seventy';
+            words[80] = 'Eighty';
+            words[90] = 'Ninety';
+            amount = amount.toString();
+            var atemp = amount.split(".");
+            var number = atemp[0].split(",").join("");
+
+            var n_length = number.length;
+            var words_string = "";
+            if (n_length <= 9) {
+                var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+                var received_n_array = new Array();
+                for (var i = 0; i < n_length; i++) {
+                    received_n_array[i] = number.substr(i, 1);
+                }
+                for (var i = 9 - n_length, j = 0; i < 9; i++ , j++) {
+                    n_array[i] = received_n_array[j];
+                }
+                for (var i = 0, j = 1; i < 9; i++ , j++) {
+                    if (i == 0 || i == 2 || i == 4 || i == 7) {
+                        if (n_array[i] == 1) {
+                            n_array[j] = 10 + parseInt(n_array[j]);
+                            n_array[i] = 0;
+                        }
+                    }
+                }
+                value = "";
+                for (var i = 0; i < 9; i++) {
+                    if (i == 0 || i == 2 || i == 4 || i == 7) {
+                        value = n_array[i] * 10;
+                    } else {
+                        value = n_array[i];
+                    }
+                    if (value != 0) {
+                        words_string += words[value] + " ";
+                    }
+                    if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+                        words_string += "Crores ";
+                    }
+                    if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+                        words_string += "Lakhs ";
+                    }
+                    if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+                        words_string += "Thousand ";
+                    }
+                    if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+                        words_string += "Hundred and ";
+                    } else if (i == 6 && value != 0) {
+                        words_string += "Hundred ";
+                    }
+                }
+                words_string = words_string.split("  ").join(" ");
+            }
+            return words_string;
+        }
+        $('.PerTxt').keyup(function (e) {
+            if (e.which == 8) {
+                var dd = $(this).val().replace('%', '');
+                $(this).val(dd);
+                return;
+            }
+            if ($(this).val() == '' || $(this).val() == '%') {
+                $(this).val('');
+                return;
+            }
+            $(this).val(function (index, old) {
+                return old.replace(/[^0-9\.]/g, '') + '%';
+            });
+        });
+    </script>
+
+    <script>
+
+        var config = {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [
+                        [],
+                        [],
+
+                    ],
+                    backgroundColor: [
+                        '#00b4ff',
+                        '#7ee3ff',
+                        //window.chartColors.green,
+                        //window.chartColors.yellow,
+
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    'Maturity Amount',
+                    'Interest Earned'
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+
+        window.onload = function () {
+            var ctx = document.getElementById('chart-area').getContext('2d');
+            window.myPie = new Chart(ctx, config);
+        };
+
+        var colorNames = Object.keys(window.chartColors);
+
+    </script>
+
+    <script>
+
+        $('html, body').animate({
+            'scrollTop': $('.resultpanel').offset().top - 150 /* I deleted the callback (on navToggle) and setTimeout code as it did not make a huge difference to the result */
+        }, 666);
+    </script>
+
+
+</body>
+
+<!-- Mirrored from www.finology.in/Calculators/Invest/Fixed-Deposit-Calculator.aspx by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Jun 2025 12:04:01 GMT -->
+</html>
