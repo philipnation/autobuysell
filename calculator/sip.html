@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">SIP Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="monthly-investment" class="block text-sm font-medium text-gray-700 mb-1">Monthly Investment (₹)</label>
+                    <input type="range" id="monthly-investment" min="500" max="200000" step="500" value="10000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹500</span>
+                        <span id="monthly-investment-value" class="font-medium">₹10,000</span>
+                        <span class="text-sm text-gray-500">₹2L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investment-period" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (years)</label>
+                    <input type="range" id="investment-period" min="1" max="40" step="1" value="10" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1 year</span>
+                        <span id="investment-period-value" class="font-medium">10 years</span>
+                        <span class="text-sm text-gray-500">40 years</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="expected-return" class="block text-sm font-medium text-gray-700 mb-1">Expected Return (%)</label>
+                    <input type="range" id="expected-return" min="1" max="30" step="0.5" value="12" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="expected-return-value" class="font-medium">12%</span>
+                        <span class="text-sm text-gray-500">30%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-green-800 mb-4">Investment Results</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Invested Amount</h3>
+                            <p id="invested-amount" class="text-2xl font-bold text-green-600">₹12,00,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Est. Returns</h3>
+                            <p id="estimated-returns" class="text-2xl font-bold text-green-600">₹11,23,391</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Value</h3>
+                            <p id="total-value" class="text-2xl font-bold text-green-600">₹23,23,391</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculateSIP() {
+            const monthlyInvestment = parseFloat(document.getElementById('monthly-investment').value);
+            const years = parseFloat(document.getElementById('investment-period').value);
+            const annualReturn = parseFloat(document.getElementById('expected-return').value);
+            
+            const months = years * 12;
+            const monthlyRate = annualReturn / 100 / 12;
+            
+            // Future value of SIP formula
+            const futureValue = monthlyInvestment * 
+                (Math.pow(1 + monthlyRate, months) - 1) * 
+                (1 + monthlyRate) / monthlyRate;
+            
+            const investedAmount = monthlyInvestment * months;
+            const estimatedReturns = futureValue - investedAmount;
+            
+            document.getElementById('invested-amount').textContent = formatINR(investedAmount);
+            document.getElementById('estimated-returns').textContent = formatINR(estimatedReturns);
+            document.getElementById('total-value').textContent = formatINR(futureValue);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('return')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else if (input.id.includes('period')) {
+                    return `${val} years`;
+                } else {
+                    return formatINR(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateSIP();
+            });
+        });
+        
+        calculateSIP();
+    </script>
+</body>
+</html>

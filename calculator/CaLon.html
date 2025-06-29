@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Loan Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Car Loan Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="car-price" class="block text-sm font-medium text-gray-700 mb-1">Car Price ($)</label>
+                    <input type="range" id="car-price" min="5000" max="100000" step="1000" value="25000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$5K</span>
+                        <span id="car-price-value" class="font-medium">$25,000</span>
+                        <span class="text-sm text-gray-500">$100K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="down-payment" class="block text-sm font-medium text-gray-700 mb-1">Down Payment ($)</label>
+                    <input type="range" id="down-payment" min="0" max="50000" step="500" value="5000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$0</span>
+                        <span id="down-payment-value" class="font-medium">$5,000</span>
+                        <span class="text-sm text-gray-500">$50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="loan-term" class="block text-sm font-medium text-gray-700 mb-1">Loan Term (months)</label>
+                    <input type="range" id="loan-term" min="12" max="84" step="12" value="60" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">12 mo</span>
+                        <span id="loan-term-value" class="font-medium">60 mo</span>
+                        <span class="text-sm text-gray-500">84 mo</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="interest-rate" class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+                    <input type="range" id="interest-rate" min="0" max="20" step="0.25" value="5.5" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="interest-rate-value" class="font-medium">5.5%</span>
+                        <span class="text-sm text-gray-500">20%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Loan Details</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Loan Amount</h3>
+                            <p id="loan-amount" class="text-2xl font-bold text-blue-600">$20,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Monthly Payment</h3>
+                            <p id="monthly-payment" class="text-2xl font-bold text-blue-600">$382.02</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Interest</h3>
+                            <p id="total-interest" class="text-2xl font-bold text-blue-600">$2,921.20</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Cost</h3>
+                            <p id="total-cost" class="text-2xl font-bold text-blue-600">$27,921.20</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateCarLoan() {
+            const carPrice = parseFloat(document.getElementById('car-price').value);
+            const downPayment = parseFloat(document.getElementById('down-payment').value);
+            const loanTerm = parseFloat(document.getElementById('loan-term').value);
+            const interestRate = parseFloat(document.getElementById('interest-rate').value);
+            
+            const loanAmount = carPrice - downPayment;
+            const monthlyRate = interestRate / 100 / 12;
+            const monthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanTerm) / (Math.pow(1 + monthlyRate, loanTerm) - 1);
+            const totalInterest = (monthlyPayment * loanTerm) - loanAmount;
+            const totalCost = carPrice + totalInterest;
+            
+            document.getElementById('loan-amount').textContent = formatCurrency(loanAmount);
+            document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
+            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+            document.getElementById('total-cost').textContent = formatCurrency(totalCost);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('rate')) {
+                    return `${parseFloat(val).toFixed(2)}%`;
+                } else if (input.id.includes('term')) {
+                    return `${val} mo`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateCarLoan();
+            });
+        });
+        
+        calculateCarLoan();
+    </script>
+</body>
+</html>

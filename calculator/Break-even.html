@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Break-even Point Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Break-even Point Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="fixed-costs" class="block text-sm font-medium text-gray-700 mb-1">Fixed Costs ($)</label>
+                    <input type="range" id="fixed-costs" min="1000" max="100000" step="1000" value="20000" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$1K</span>
+                        <span id="fixed-costs-value" class="font-medium">$20,000</span>
+                        <span class="text-sm text-gray-500">$100K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="variable-costs" class="block text-sm font-medium text-gray-700 mb-1">Variable Costs per Unit ($)</label>
+                    <input type="range" id="variable-costs" min="1" max="100" step="1" value="15" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$1</span>
+                        <span id="variable-costs-value" class="font-medium">$15</span>
+                        <span class="text-sm text-gray-500">$100</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price per Unit ($)</label>
+                    <input type="range" id="price" min="1" max="200" step="1" value="30" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$1</span>
+                        <span id="price-value" class="font-medium">$30</span>
+                        <span class="text-sm text-gray-500">$200</span>
+                    </div>
+                </div>
+                
+                <div class="bg-orange-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-orange-800 mb-4">Break-even Analysis</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Break-even Units</h3>
+                            <p id="break-even-units" class="text-2xl font-bold text-orange-600">1,333</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Break-even Revenue</h3>
+                            <p id="break-even-revenue" class="text-2xl font-bold text-orange-600">$40,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Profit per Unit</h3>
+                            <p id="profit-per-unit" class="text-2xl font-bold text-orange-600">$15</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US').format(num);
+        }
+        
+        function calculateBreakEven() {
+            const fixedCosts = parseFloat(document.getElementById('fixed-costs').value);
+            const variableCosts = parseFloat(document.getElementById('variable-costs').value);
+            const price = parseFloat(document.getElementById('price').value);
+            
+            const contributionMargin = price - variableCosts;
+            const breakEvenUnits = Math.ceil(fixedCosts / contributionMargin);
+            const breakEvenRevenue = breakEvenUnits * price;
+            
+            document.getElementById('break-even-units').textContent = formatNumber(breakEvenUnits);
+            document.getElementById('break-even-revenue').textContent = formatCurrency(breakEvenRevenue);
+            document.getElementById('profit-per-unit').textContent = formatCurrency(contributionMargin);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('costs') || input.id.includes('price')) {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateBreakEven();
+            });
+        });
+        
+        calculateBreakEven();
+    </script>
+</body>
+</html>

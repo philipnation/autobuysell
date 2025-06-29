@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Corpus Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Retirement Corpus Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="current-age" class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
+                    <input type="range" id="current-age" min="25" max="70" step="1" value="35" class="w-full h-2 bg-yellow-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">25</span>
+                        <span id="current-age-value" class="font-medium">35</span>
+                        <span class="text-sm text-gray-500">70</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="retirement-age" class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
+                    <input type="range" id="retirement-age" min="40" max="80" step="1" value="65" class="w-full h-2 bg-yellow-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">40</span>
+                        <span id="retirement-age-value" class="font-medium">65</span>
+                        <span class="text-sm text-gray-500">80</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="monthly-expenses" class="block text-sm font-medium text-gray-700 mb-1">Monthly Expenses ($)</label>
+                    <input type="range" id="monthly-expenses" min="1000" max="10000" step="100" value="3000" class="w-full h-2 bg-yellow-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$1K</span>
+                        <span id="monthly-expenses-value" class="font-medium">$3,000</span>
+                        <span class="text-sm text-gray-500">$10K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="inflation" class="block text-sm font-medium text-gray-700 mb-1">Inflation Rate (%)</label>
+                    <input type="range" id="inflation" min="1" max="10" step="0.1" value="3" class="w-full h-2 bg-yellow-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="inflation-value" class="font-medium">3%</span>
+                        <span class="text-sm text-gray-500">10%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="returns" class="block text-sm font-medium text-gray-700 mb-1">Expected Returns (%)</label>
+                    <input type="range" id="returns" min="1" max="15" step="0.5" value="7" class="w-full h-2 bg-yellow-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="returns-value" class="font-medium">7%</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-yellow-800 mb-4">Retirement Corpus Needed</h2>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Corpus Required</h3>
+                            <p id="corpus-required" class="text-2xl font-bold text-yellow-600">$1,234,567</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Monthly Savings Needed</h3>
+                            <p id="monthly-savings" class="text-2xl font-bold text-yellow-600">$2,345</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateRetirement(currentAge, retireAge, monthlyExpenses, inflation, returns) {
+            // Simplified calculation
+            const yearsToRetire = retireAge - currentAge;
+            const retirementYears = 30; // Assuming 30 years of retirement
+            
+            // Future value of monthly expenses at retirement
+            const futureMonthlyExpenses = monthlyExpenses * Math.pow(1 + inflation/100, yearsToRetire);
+            
+            // Corpus needed at retirement (25x annual expenses - 4% rule)
+            const corpusNeeded = futureMonthlyExpenses * 12 * 25;
+            
+            // Monthly savings needed
+            const monthlyRate = returns / 100 / 12;
+            const months = yearsToRetire * 12;
+            const monthlySavings = corpusNeeded * (monthlyRate) / (Math.pow(1 + monthlyRate, months) - 1);
+            
+            return {
+                corpus: Math.round(corpusNeeded),
+                savings: Math.round(monthlySavings)
+            };
+        }
+        
+        function updateRetirementCalc() {
+            const currentAge = parseInt(document.getElementById('current-age').value);
+            const retireAge = parseInt(document.getElementById('retirement-age').value);
+            const monthlyExpenses = parseFloat(document.getElementById('monthly-expenses').value);
+            const inflation = parseFloat(document.getElementById('inflation').value);
+            const returns = parseFloat(document.getElementById('returns').value);
+            
+            const result = calculateRetirement(currentAge, retireAge, monthlyExpenses, inflation, returns);
+            
+            document.getElementById('corpus-required').textContent = formatCurrency(result.corpus);
+            document.getElementById('monthly-savings').textContent = formatCurrency(result.savings);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('age')) {
+                    return val;
+                } else if (input.id.includes('expenses')) {
+                    return formatCurrency(parseFloat(val));
+                } else {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateRetirementCalc();
+            });
+        });
+        
+        updateRetirementCalc();
+    </script>
+</body>
+</html>
