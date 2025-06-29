@@ -1001,7 +1001,8 @@
             class="fixed inset-y-0 left-0 pt-10 z-999 w-64 transform -translate-x-full bg-white shadow-lg transition-transform duration-300 lg:hidden">
             <div class="flex flex-col gap-4 p-4">
               <ul class="space-y-2">
-                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-bar-chart mr-3"></i>Calculator</li>
+                                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-home mr-3"></i>Home</li>
+                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><a href="calculator.html"><i class="fa fa-bar-chart mr-3"></i>Calculator</a></li>
                 <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-box mr-3"></i>Heat map</li>
                 <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-circle mr-3"></i>About us</li>
               </ul>
@@ -1368,95 +1369,222 @@
                   </div>
 
 
-                  <div class="lg:w-2/5 w-full" style="opacity: 1; transform: none">
-                <div class="relative backdrop-blur-xl rounded-2xl p-4 md:p-6 lg:p-8 shadow-2xl border bg-white/80 border-white/20">
-  <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl"></div>
-  <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl"></div>
-  <div class="relative z-10">
-    <div class="space-y-3 md:space-y-4">
-      <div class="grid grid-cols-3 gap-2 md:gap-4 text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400 px-2">
-        <div>Asset</div>
-        <div class="text-center flex gap-2">
-          <span>Price</span> /<span>Cap</span>
-        </div>
-        <div class="text-right">24h</div>
-      </div>
-      <div class="space-y-3 md:space-y-4" id="stocks-container">
-        <!-- Loading states will appear here initially -->
-        <div class="grid grid-cols-4 gap-4 p-4 rounded-xl animate-pulse bg-gray-50">
-          <div class="col-span-1 flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gray-200"></div>
-            <div class="flex flex-col">
-              <div class="h-4 w-16 rounded bg-gray-200"></div>
-              <div class="h-3 w-10 rounded mt-1 bg-gray-200"></div>
+       <div class="lg:w-2/5 w-full" style="opacity: 1; transform: none">
+    <div class="relative backdrop-blur-xl rounded-2xl p-4 md:p-6 lg:p-8 shadow-2xl border bg-white/80 border-white/20">
+        <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl"></div>
+        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl"></div>
+        <div class="relative z-10">
+            <div class="space-y-3 md:space-y-4">
+                <div class="grid grid-cols-3 gap-2 md:gap-4 text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400 px-2">
+                    <div>Asset</div>
+                    <div class="text-center">Price</div>
+                    <div class="text-right">Change</div>
+                </div>
+                <div class="space-y-3 md:space-y-4" id="stocks-container">
+                    <!-- Loading states will appear here initially -->
+                    <div class="grid grid-cols-4 gap-4 p-4 rounded-xl animate-pulse bg-gray-50">
+                        <div class="col-span-1 flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-gray-200"></div>
+                            <div class="flex flex-col">
+                                <div class="h-4 w-16 rounded bg-gray-200"></div>
+                                <div class="h-3 w-10 rounded mt-1 bg-gray-200"></div>
+                            </div>
+                        </div>
+                        <div class="col-span-1 flex items-center justify-end">
+                            <div class="h-4 w-20 rounded bg-gray-200"></div>
+                        </div>
+                        <div class="col-span-1 flex items-center justify-end">
+                            <div class="h-4 w-16 rounded bg-gray-200"></div>
+                        </div>
+                        <div class="col-span-1 flex items-center justify-end">
+                            <div class="h-4 w-20 rounded bg-gray-200"></div>
+                        </div>
+                    </div>
+                    <!-- Repeat loading state 4 more times -->
+                </div>
             </div>
-          </div>
-          <div class="col-span-1 flex items-center justify-end">
-            <div class="h-4 w-20 rounded bg-gray-200"></div>
-          </div>
-          <div class="col-span-1 flex items-center justify-end">
-            <div class="h-4 w-16 rounded bg-gray-200"></div>
-          </div>
-          <div class="col-span-1 flex items-center justify-end">
-            <div class="h-4 w-20 rounded bg-gray-200"></div>
-          </div>
         </div>
-        <!-- Repeat loading state 4 more times -->
-      </div>
     </div>
-  </div>
 </div>
 
-<script>
-// List of popular Indian stocks to fetch
-const indianStocks = [
-  { symbol: 'RELIANCE', name: 'Reliance Industries' },
-  { symbol: 'TCS', name: 'Tata Consultancy' },
-  { symbol: 'HDFCBANK', name: 'HDFC Bank' },
-  { symbol: 'INFY', name: 'Infosys' },
-  { symbol: 'HINDUNILVR', name: 'Hindustan Unilever' }
+<!--<script>
+// List of popular Indian indices and stocks with their tokens
+const instruments = [
+    { 
+        symbol: 'NIFTY 50', 
+        token: '99926000', 
+        exchange: 'NSE',
+        icon: 'nifi.png'
+    },
+    { 
+        symbol: 'BANKNIFTY', 
+        token: '99926009', 
+        exchange: 'NSE',
+        icon: 'nif.png'
+    },
+    { 
+        symbol: 'RELIANCE', 
+        token: '3045', 
+        exchange: 'NSE',
+        icon: 'relia.jpg'
+    },
+    { 
+        symbol: 'TCS', 
+        token: '11536', 
+        exchange: 'NSE',
+        icon: 'tcs.jpg'
+    },
+    { 
+        symbol: 'HDFCBANK', 
+        token: '1333', 
+        exchange: 'NSE',
+        icon: 'https://companieslogo.com/img/orig/HDB-bb6241fe.png'
+    }
 ];
 
-// Function to fetch stock data from NSE API
-async function fetchStockData(stockSymbol) {
-  try {
-    // Note: NSE API requires proper headers to avoid CORS issues
-    const response = await fetch(`https://www.nseindia.com/api/quote-equity?symbol=${stockSymbol}`);
+// Function to fetch historical candle data
+async function fetchCandleData(instrument) {
+    const now = new Date();
+    const toDate = now.toISOString().split('T')[0] + ' ' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
     
-    const data = await response.json();
-    const stockData = JSON.parse(data.contents);
+    // Subtract 1 day for fromdate
+    const fromDate = new Date(now);
+    fromDate.setDate(now.getDate() - 1);
+    const fromDateStr = fromDate.toISOString().split('T')[0] + ' ' + fromDate.getHours().toString().padStart(2, '0') + ':' + fromDate.getMinutes().toString().padStart(2, '0');
+    
+    const payload = {
+        exchange: instrument.exchange,
+        symboltoken: instrument.token,
+        interval: "ONE_DAY",
+        fromdate: fromDateStr,
+        todate: toDate
+    };
 
+    try {
+        const response = await fetch('https://apiconnect.angelone.in/rest/secure/angelbroking/historical/v1/getCandleData', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-PrivateKey': 'zqNVOHX6', // Your API key
+              'X-UserType': 'USER',
+              'X-SourceID': 'WEB',
+              'Authorization': 'Bearer ef4bb7b1-9f6f-4216-a069-a58c50060a13' // Your JWT token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        console.log(data)
+        
+        if (data.status && data.data && data.data.length > 0) {
+            const latestCandle = data.data[data.data.length - 1];
+            const prevCandle = data.data.length > 1 ? data.data[data.data.length - 2] : latestCandle;
+            
+            const price = latestCandle[4]; // Close price
+            const prevPrice = prevCandle[4];
+            const change = ((price - prevPrice) / prevPrice) * 100;
+            
+            return {
+                symbol: instrument.symbol,
+                price: price.toFixed(2),
+                change: change.toFixed(2),
+                icon: instrument.icon
+            };
+        }
+    } catch (error) {
+        console.error(`Error fetching data for ${instrument.symbol}:`, error);
+    }
+    
     return {
-      symbol: stockSymbol,
-      name: stockData.info.companyName,
-      price: stockData.finalPrice || stockData.lastPrice,
-      change: stockData.priceInfo?.pChange
+        symbol: instrument.symbol,
+        price: 'N/A',
+        change: 'N/A',
+        icon: instrument.icon
     };
+}
+
+// Function to display instrument data
+function displayInstruments(instrumentsData) {
+    const container = document.getElementById('stocks-container');
+    container.innerHTML = ''; // Clear loading states
+    
+    instrumentsData.forEach(instrument => {
+        const changeClass = instrument.change >= 0 ? 'text-green-500' : 'text-red-500';
+        const changeSymbol = instrument.change >= 0 ? '+' : '';
+        
+        const instrumentElement = `
+            <div class="grid grid-cols-3 gap-2 md:gap-4 p-3 md:p-4 rounded-xl bg-white hover:bg-gray-50 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img src="${instrument.icon}" alt="${instrument.symbol}" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="font-medium">${instrument.symbol}</div>
+                        <div class="text-xs text-gray-500">${instrument.exchange || 'NSE'}</div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center font-medium">
+                    ₹${instrument.price || 'N/A'}
+                </div>
+                <div class="flex items-center justify-end ${changeClass} font-medium">
+                    ${instrument.change !== 'N/A' ? `${changeSymbol}${instrument.change}%` : 'N/A'}
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML += instrumentElement;
+    });
+}
+
+// Fetch all instrument data when page loads
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const instrumentsData = await Promise.all(
+            instruments.map(instrument => fetchCandleData(instrument))
+        );
+        displayInstruments(instrumentsData);
+    } catch (error) {
+        console.error('Error loading instrument data:', error);
+        document.getElementById('stocks-container').innerHTML = `
+            <div class="text-center text-red-500 p-4">Failed to load data. Please try again later.</div>
+        `;
+    }
+});
+</script>-->
+
+
+<script>
+// Main function to try all APIs in sequence
+async function fetchStockPrices() {
+  try {
+    // First try NSE official API
+    await fetchNSEStockPrices();
   } catch (error) {
-    console.error(`Error fetching data for ${stockSymbol}:`, error);
-    return {
-      symbol: stockSymbol,
-      name: stockSymbol,
-      price: 'N/A',
-      change: 'N/A'
-    };
+    console.error('All API attempts failed:', error);
+    document.getElementById('stocks-container').innerHTML = `
+      <div class="text-center text-red-500 p-4">Failed to load stock data. Please try again later.</div>
+    `;
   }
 }
 
-// Function to display stock data
-function displayStocks(stocksData) {
+// Display function (same as before)
+function displayStocks(stocks) {
   const container = document.getElementById('stocks-container');
-  container.innerHTML = ''; // Clear loading states
+  container.innerHTML = '';
   
-  stocksData.forEach(stock => {
-    const changeClass = stock.change >= 0 ? 'text-green-500' : 'text-red-500';
-    const changeSymbol = stock.change >= 0 ? '+' : '';
+  stocks.forEach(stock => {
+    const price = stock.price === 'N/A' ? 'N/A' : '₹' + parseFloat(stock.price).toFixed(2);
+    const change = stock.change;
+    const changeClass = change === 'N/A' ? 'text-gray-500' : (change >= 0 ? 'text-green-500' : 'text-red-500');
+    const changeSymbol = change === 'N/A' ? '' : (change >= 0 ? '+' : '');
     
     const stockElement = `
       <div class="grid grid-cols-3 gap-2 md:gap-4 p-3 md:p-4 rounded-xl bg-white hover:bg-gray-50 transition-colors">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center">
-            <span class="font-medium text-gray-600">${stock.symbol.charAt(0)}</span>
+          <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+            <span class="font-medium text-gray-600">${stock.symbol[0]}</span>
           </div>
           <div class="flex flex-col">
             <div class="font-medium">${stock.symbol}</div>
@@ -1464,10 +1592,10 @@ function displayStocks(stocksData) {
           </div>
         </div>
         <div class="flex items-center justify-center font-medium">
-          ₹${stock.price || 'N/A'}
+          ${price}
         </div>
         <div class="flex items-center justify-end ${changeClass} font-medium">
-          ${stock.change ? `${changeSymbol}${stock.change}%` : 'N/A'}
+          ${change === 'N/A' ? 'N/A' : `${changeSymbol}${change}%`}
         </div>
       </div>
     `;
@@ -1476,102 +1604,11 @@ function displayStocks(stocksData) {
   });
 }
 
-// Fetch all stock data when page loads
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const stocksData = await Promise.all(
-      indianStocks.map(stock => fetchStockData(stock.symbol))
-    );
-    displayStocks(stocksData);
-  } catch (error) {
-    console.error('Error loading stock data:', error);
-    document.getElementById('stocks-container').innerHTML = `
-      <div class="text-center text-red-500 p-4">Failed to load stock data. Please try again later.</div>
-    `;
-  }
-});
+// Initialize
+document.addEventListener('DOMContentLoaded', fetchStockPrices);
+setInterval(fetchStockPrices, 30000); // Refresh every 30 seconds
 </script>
-            </div>
-
-<script>
-// Top 5 popular cryptocurrencies
-const popularAssets = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT'];
-
-// Fetch price data
-async function fetchCryptoData() {
-  try {
-    // First fetch current prices
-    const priceResponse = await fetch('https://api.binance.com/api/v3/ticker/price');
-    const priceData = await priceResponse.json();
-    
-    // Then fetch 24h change data
-    const changeResponse = await fetch('https://api.binance.com/api/v3/ticker/24hr');
-    const changeData = await changeResponse.json();
-    
-    // Filter for our popular assets
-    const filteredPriceData = priceData.filter(item => popularAssets.includes(item.symbol));
-    const filteredChangeData = changeData.filter(item => popularAssets.includes(item.symbol));
-    
-    // Combine the data
-    const combinedData = filteredPriceData.map(priceItem => {
-      const changeItem = filteredChangeData.find(ci => ci.symbol === priceItem.symbol);
-      return {
-        symbol: priceItem.symbol,
-        price: parseFloat(priceItem.price).toFixed(2),
-        change: changeItem ? parseFloat(changeItem.priceChangePercent).toFixed(2) : '0.00'
-      };
-    });
-    
-    // Sort by popularity (as defined in our array)
-    combinedData.sort((a, b) => {
-      return popularAssets.indexOf(a.symbol) - popularAssets.indexOf(b.symbol);
-    });
-    
-    displayCryptoData(combinedData);
-  } catch (error) {
-    console.error('Error fetching crypto data:', error);
-    document.getElementById('crypto-container').innerHTML = '<div class="text-center text-red-500">Failed to load data. Please try again later.</div>';
-  }
-}
-
-// Display the data
-function displayCryptoData(data) {
-  const container = document.getElementById('crypto-container');
-  container.innerHTML = ''; // Clear loading states
-  
-  data.forEach(item => {
-    const assetName = item.symbol.replace('USDT', '');
-    const changeClass = item.change >= 0 ? 'text-green-500' : 'text-red-500';
-    const changeSymbol = item.change >= 0 ? '+' : '';
-    
-    const cryptoElement = `
-      <div class="grid grid-cols-3 gap-2 md:gap-4 p-3 md:p-4 rounded-xl bg-white hover:bg-gray-50 transition-colors">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center">
-            <span class="font-medium text-gray-600">${assetName.charAt(0)}</span>
-          </div>
-          <div class="flex flex-col">
-            <div class="font-medium">${assetName}</div>
-            <div class="text-xs text-gray-500">${item.symbol}</div>
-          </div>
-        </div>
-        <div class="flex items-center justify-center font-medium">
-          $${item.price}
-        </div>
-        <div class="flex items-center justify-end ${changeClass} font-medium">
-          ${changeSymbol}${item.change}%
-        </div>
-      </div>
-    `;
-    
-    container.innerHTML += cryptoElement;
-  });
-}
-
-// Fetch data when page loads ₹
-document.addEventListener('DOMContentLoaded', fetchCryptoData);
-</script>
-                </div>
+</div>
               </div>
             </section>
             
