@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en" class="light" style="color-scheme: light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Financial Calculators | Autobuysell</title>
+  <style>
+    /* Calculator popup styles */
+    .calculator-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .calculator-popup.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .calculator-container {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    
+    .calculator-popup.active .calculator-container {
+      transform: translateY(0);
+    }
+    
+    .calculator-header {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .calculator-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .close-calculator {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .calculator-body {
+      padding: 20px;
+    }
+    
+    .calculator-form-group {
+      margin-bottom: 15px;
+    }
+    
+    .calculator-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .calculator-input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .calculator-button {
+      background: linear-gradient(to right, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .calculator-result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9fafb;
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .calculator-result-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    /* Grid layout for calculator links */
+    .calculators-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    
+    .calculator-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid #eee;
+    }
+    
+    .calculator-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    
+    .calculator-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .calculator-card-desc {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* Section headers */
+    .calculators-section {
+      margin: 40px 0;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-left: 20px;
+      color: #333;
+      background: linear-gradient(to right, #4f46e5, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="__variable_5cfdac __variable_9a8899 antialiased" style="--radius: 0.5rem">
+  <div class="h-full">
+    <div>
+      <main>
+        <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gradient-to-b from-white/80 to-white/40" style="opacity: 1; transform: none">
+          <!-- Header content from original HTML -->
+        </header>
+        
+        <div class="w-full bg-background text-foreground overflow-hidden pt-20">
+          <div class="container mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold mb-8 text-center">Financial Calculators</h1>
+            
+            <!-- Stock Market & Trading Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Stock Market & Trading Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Equity SIP Calculator -->
+                <div class="calculator-card" onclick="openCalculator('equity-sip')">
+                  <div class="calculator-card-title">Equity SIP Calculator</div>
+                  <div class="calculator-card-desc">Calculate returns on your systematic investment plan in stocks</div>
+                </div>
+                
+                <!-- STT Calculator -->
+                <div class="calculator-card" onclick="openCalculator('stt')">
+                  <div class="calculator-card-title">STT Calculator</div>
+                  <div class="calculator-card-desc">Calculate Securities Transaction Tax for your trades</div>
+                </div>
+                
+                <!-- Brokerage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('brokerage')">
+                  <div class="calculator-card-title">Brokerage Calculator</div>
+                  <div class="calculator-card-desc">Estimate brokerage charges for Zerodha, Upstox, Angel etc.</div>
+                </div>
+                
+                <!-- Delivery vs Intraday Tax Calculator -->
+                <div class="calculator-card" onclick="openCalculator('delivery-intraday')">
+                  <div class="calculator-card-title">Delivery vs Intraday Tax Calculator</div>
+                  <div class="calculator-card-desc">Compare tax implications for different trade types</div>
+                </div>
+                
+                <!-- Profit/Loss Calculator -->
+                <div class="calculator-card" onclick="openCalculator('profit-loss')">
+                  <div class="calculator-card-title">Profit/Loss Calculator</div>
+                  <div class="calculator-card-desc">Calculate gains or losses from your share trading</div>
+                </div>
+                
+                <!-- Futures & Options Breakeven Calculator -->
+                <div class="calculator-card" onclick="openCalculator('fno-breakeven')">
+                  <div class="calculator-card-title">F&O Breakeven Calculator</div>
+                  <div class="calculator-card-desc">Find the breakeven point for your futures and options trades</div>
+                </div>
+                
+                <!-- Option Premium Calculator -->
+                <div class="calculator-card" onclick="openCalculator('option-premium')">
+                  <div class="calculator-card-title">Option Premium Calculator</div>
+                  <div class="calculator-card-desc">Black-Scholes model for option pricing</div>
+                </div>
+                
+                <!-- Risk-Reward Ratio Calculator -->
+                <div class="calculator-card" onclick="openCalculator('risk-reward')">
+                  <div class="calculator-card-title">Risk-Reward Ratio Calculator</div>
+                  <div class="calculator-card-desc">Evaluate potential trades based on risk vs reward</div>
+                </div>
+                
+                <!-- Dividend Yield Calculator -->
+                <div class="calculator-card" onclick="openCalculator('dividend-yield')">
+                  <div class="calculator-card-title">Dividend Yield Calculator</div>
+                  <div class="calculator-card-desc">Calculate dividend yield on your stock investments</div>
+                </div>
+                
+                <!-- Currency Exchange Rate Calculator -->
+                <div class="calculator-card" onclick="openCalculator('currency-exchange')">
+                  <div class="calculator-card-title">Currency Exchange Calculator</div>
+                  <div class="calculator-card-desc">Convert between INR and other currencies</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Business & Corporate Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Business & Corporate Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Break-even Point Calculator -->
+                <div class="calculator-card" onclick="openCalculator('business-breakeven')">
+                  <div class="calculator-card-title">Break-even Point Calculator</div>
+                  <div class="calculator-card-desc">Determine when your business will become profitable</div>
+                </div>
+                
+                <!-- Profit Margin Calculator -->
+                <div class="calculator-card" onclick="openCalculator('profit-margin')">
+                  <div class="calculator-card-title">Profit Margin Calculator</div>
+                  <div class="calculator-card-desc">Calculate gross and net profit margins</div>
+                </div>
+                
+                <!-- Markup Calculator -->
+                <div class="calculator-card" onclick="openCalculator('markup')">
+                  <div class="calculator-card-title">Markup Calculator</div>
+                  <div class="calculator-card-desc">Calculate markup percentage on cost price</div>
+                </div>
+                
+                <!-- Revenue Growth Calculator -->
+                <div class="calculator-card" onclick="openCalculator('revenue-growth')">
+                  <div class="calculator-card-title">Revenue Growth Calculator</div>
+                  <div class="calculator-card-desc">Measure your company's revenue growth rate</div>
+                </div>
+                
+                <!-- Inventory Turnover Calculator -->
+                <div class="calculator-card" onclick="openCalculator('inventory-turnover')">
+                  <div class="calculator-card-title">Inventory Turnover Calculator</div>
+                  <div class="calculator-card-desc">Calculate how quickly inventory is sold</div>
+                </div>
+                
+                <!-- EBITDA Calculator -->
+                <div class="calculator-card" onclick="openCalculator('ebitda')">
+                  <div class="calculator-card-title">EBITDA Calculator</div>
+                  <div class="calculator-card-desc">Earnings Before Interest, Taxes, Depreciation & Amortization</div>
+                </div>
+                
+                <!-- Operating Margin Calculator -->
+                <div class="calculator-card" onclick="openCalculator('operating-margin')">
+                  <div class="calculator-card-title">Operating Margin Calculator</div>
+                  <div class="calculator-card-desc">Calculate operating profit as percentage of revenue</div>
+                </div>
+                
+                <!-- ROCE Calculator -->
+                <div class="calculator-card" onclick="openCalculator('roce')">
+                  <div class="calculator-card-title">ROCE Calculator</div>
+                  <div class="calculator-card-desc">Return on Capital Employed calculation</div>
+                </div>
+                
+                <!-- DSCR Calculator -->
+                <div class="calculator-card" onclick="openCalculator('dscr')">
+                  <div class="calculator-card-title">DSCR Calculator</div>
+                  <div class="calculator-card-desc">Debt Service Coverage Ratio for loan eligibility</div>
+                </div>
+                
+                <!-- Working Capital Calculator -->
+                <div class="calculator-card" onclick="openCalculator('working-capital')">
+                  <div class="calculator-card-title">Working Capital Calculator</div>
+                  <div class="calculator-card-desc">Calculate your company's working capital</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tax & Salary Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Tax & Salary Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Income Tax Calculator -->
+                <div class="calculator-card" onclick="openCalculator('income-tax')">
+                  <div class="calculator-card-title">Income Tax Calculator</div>
+                  <div class="calculator-card-desc">Estimate your income tax liability (India/US/UK etc.)</div>
+                </div>
+                
+                <!-- Take-Home Salary Calculator -->
+                <div class="calculator-card" onclick="openCalculator('take-home-salary')">
+                  <div class="calculator-card-title">Take-Home Salary Calculator</div>
+                  <div class="calculator-card-desc">Calculate net salary after all deductions</div>
+                </div>
+                
+                <!-- HRA Exemption Calculator -->
+                <div class="calculator-card" onclick="openCalculator('hra-exemption')">
+                  <div class="calculator-card-title">HRA Exemption Calculator</div>
+                  <div class="calculator-card-desc">Calculate House Rent Allowance tax exemption</div>
+                </div>
+                
+                <!-- Standard Deduction Calculator -->
+                <div class="calculator-card" onclick="openCalculator('standard-deduction')">
+                  <div class="calculator-card-title">Standard Deduction Calculator</div>
+                  <div class="calculator-card-desc">Calculate tax benefits from standard deduction</div>
+                </div>
+                
+                <!-- Freelance Income Tax Estimator -->
+                <div class="calculator-card" onclick="openCalculator('freelance-tax')">
+                  <div class="calculator-card-title">Freelance Tax Estimator</div>
+                  <div class="calculator-card-desc">Estimate taxes for freelance income</div>
+                </div>
+                
+                <!-- Self-Employment Tax Calculator -->
+                <div class="calculator-card" onclick="openCalculator('self-employment-tax')">
+                  <div class="calculator-card-title">Self-Employment Tax Calculator</div>
+                  <div class="calculator-card-desc">Calculate taxes for self-employed individuals</div>
+                </div>
+                
+                <!-- Capital Gains Tax Estimator -->
+                <div class="calculator-card" onclick="openCalculator('capital-gains-tax')">
+                  <div class="calculator-card-title">Capital Gains Tax Estimator</div>
+                  <div class="calculator-card-desc">Estimate tax on short-term and long-term capital gains</div>
+                </div>
+                
+                <!-- GST Calculator -->
+                <div class="calculator-card" onclick="openCalculator('gst')">
+                  <div class="calculator-card-title">GST Calculator</div>
+                  <div class="calculator-card-desc">Calculate Goods & Services Tax amounts</div>
+                </div>
+                
+                <!-- VAT Calculator -->
+                <div class="calculator-card" onclick="openCalculator('vat')">
+                  <div class="calculator-card-title">VAT Calculator</div>
+                  <div class="calculator-card-desc">Calculate Value Added Tax amounts</div>
+                </div>
+                
+                <!-- Advance Tax Calculator -->
+                <div class="calculator-card" onclick="openCalculator('advance-tax')">
+                  <div class="calculator-card-title">Advance Tax Calculator</div>
+                  <div class="calculator-card-desc">Estimate advance tax payments</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Retirement Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Retirement Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Retirement Corpus Calculator -->
+                <div class="calculator-card" onclick="openCalculator('retirement-corpus')">
+                  <div class="calculator-card-title">Retirement Corpus Calculator</div>
+                  <div class="calculator-card-desc">Calculate how much you need to save for retirement</div>
+                </div>
+                
+                <!-- NPS Calculator -->
+                <div class="calculator-card" onclick="openCalculator('nps')">
+                  <div class="calculator-card-title">NPS Calculator</div>
+                  <div class="calculator-card-desc">National Pension System returns calculator</div>
+                </div>
+                
+                <!-- Pension Plan Calculator -->
+                <div class="calculator-card" onclick="openCalculator('pension-plan')">
+                  <div class="calculator-card-title">Pension Plan Calculator</div>
+                  <div class="calculator-card-desc">Estimate pension plan payouts</div>
+                </div>
+                
+                <!-- Retirement Age Calculator -->
+                <div class="calculator-card" onclick="openCalculator('retirement-age')">
+                  <div class="calculator-card-title">Retirement Age Calculator</div>
+                  <div class="calculator-card-desc">Determine optimal retirement age based on savings</div>
+                </div>
+                
+                <!-- Post-Retirement Income Planner -->
+                <div class="calculator-card" onclick="openCalculator('post-retirement-income')">
+                  <div class="calculator-card-title">Post-Retirement Income Planner</div>
+                  <div class="calculator-card-desc">Plan your income streams after retirement</div>
+                </div>
+                
+                <!-- Annuity Calculator -->
+                <div class="calculator-card" onclick="openCalculator('annuity')">
+                  <div class="calculator-card-title">Annuity Calculator</div>
+                  <div class="calculator-card-desc">Calculate annuity payouts from lump sum investment</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Savings & Budgeting Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Savings & Budgeting Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Budget Planner -->
+                <div class="calculator-card" onclick="openCalculator('budget-planner')">
+                  <div class="calculator-card-title">Budget Planner</div>
+                  <div class="calculator-card-desc">Create and manage your monthly budget</div>
+                </div>
+                
+                <!-- Savings Goal Calculator -->
+                <div class="calculator-card" onclick="openCalculator('savings-goal')">
+                  <div class="calculator-card-title">Savings Goal Calculator</div>
+                  <div class="calculator-card-desc">Plan how to reach your savings targets</div>
+                </div>
+                
+                <!-- Emergency Fund Calculator -->
+                <div class="calculator-card" onclick="openCalculator('emergency-fund')">
+                  <div class="calculator-card-title">Emergency Fund Calculator</div>
+                  <div class="calculator-card-desc">Calculate how much you need for emergencies</div>
+                </div>
+                
+                <!-- Monthly Expense Calculator -->
+                <div class="calculator-card" onclick="openCalculator('monthly-expense')">
+                  <div class="calculator-card-title">Monthly Expense Calculator</div>
+                  <div class="calculator-card-desc">Track and categorize your monthly spending</div>
+                </div>
+                
+                <!-- Piggy Bank / Kids' Savings Calculator -->
+                <div class="calculator-card" onclick="openCalculator('kids-savings')">
+                  <div class="calculator-card-title">Kids' Savings Calculator</div>
+                  <div class="calculator-card-desc">Plan savings for children's future</div>
+                </div>
+                
+                <!-- 50/30/20 Rule Calculator -->
+                <div class="calculator-card" onclick="openCalculator('50-30-20')">
+                  <div class="calculator-card-title">50/30/20 Rule Calculator</div>
+                  <div class="calculator-card-desc">Budget based on needs, wants and savings</div>
+                </div>
+                
+                <!-- Income vs Expenses Tracker -->
+                <div class="calculator-card" onclick="openCalculator('income-expense-tracker')">
+                  <div class="calculator-card-title">Income vs Expenses Tracker</div>
+                  <div class="calculator-card-desc">Monitor your cash flow</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Investment & Wealth Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Investment & Wealth Calculators</h2>
+              <div class="calculators-grid">
+                <!-- SIP Calculator -->
+                <div class="calculator-card" onclick="openCalculator('sip')">
+                  <div class="calculator-card-title">SIP Calculator</div>
+                  <div class="calculator-card-desc">Systematic Investment Plan returns calculator</div>
+                </div>
+                
+                <!-- Lumpsum Investment Calculator -->
+                <div class="calculator-card" onclick="openCalculator('lumpsum')">
+                  <div class="calculator-card-title">Lumpsum Investment Calculator</div>
+                  <div class="calculator-card-desc">Calculate returns on one-time investments</div>
+                </div>
+                
+                <!-- Mutual Fund Return Calculator -->
+                <div class="calculator-card" onclick="openCalculator('mutual-fund')">
+                  <div class="calculator-card-title">Mutual Fund Return Calculator</div>
+                  <div class="calculator-card-desc">Estimate returns from mutual fund investments</div>
+                </div>
+                
+                <!-- Compound Interest Calculator -->
+                <div class="calculator-card" onclick="openCalculator('compound-interest')">
+                  <div class="calculator-card-title">Compound Interest Calculator</div>
+                  <div class="calculator-card-desc">Power of compounding on your investments</div>
+                </div>
+                
+                <!-- CAGR Calculator -->
+                <div class="calculator-card" onclick="openCalculator('cagr')">
+                  <div class="calculator-card-title">CAGR Calculator</div>
+                  <div class="calculator-card-desc">Compound Annual Growth Rate calculation</div>
+                </div>
+                
+                <!-- ROI Calculator -->
+                <div class="calculator-card" onclick="openCalculator('roi')">
+                  <div class="calculator-card-title">ROI Calculator</div>
+                  <div class="calculator-card-desc">Return on Investment calculation</div>
+                </div>
+                
+                <!-- Inflation Adjusted Return Calculator -->
+                <div class="calculator-card" onclick="openCalculator('inflation-adjusted')">
+                  <div class="calculator-card-title">Inflation Adjusted Return</div>
+                  <div class="calculator-card-desc">Calculate real returns after inflation</div>
+                </div>
+                
+                <!-- Stock Return Calculator -->
+                <div class="calculator-card" onclick="openCalculator('stock-return')">
+                  <div class="calculator-card-title">Stock Return Calculator</div>
+                  <div class="calculator-card-desc">Calculate returns from stock investments</div>
+                </div>
+                
+                <!-- Capital Gains Tax Calculator -->
+                <div class="calculator-card" onclick="openCalculator('capital-gains')">
+                  <div class="calculator-card-title">Capital Gains Tax Calculator</div>
+                  <div class="calculator-card-desc">Estimate tax on investment profits</div>
+                </div>
+                
+                <!-- Risk Tolerance Analyzer -->
+                <div class="calculator-card" onclick="openCalculator('risk-tolerance')">
+                  <div class="calculator-card-title">Risk Tolerance Analyzer</div>
+                  <div class="calculator-card-desc">Determine your investment risk profile</div>
+                </div>
+                
+                <!-- Portfolio Rebalancing Calculator -->
+                <div class="calculator-card" onclick="openCalculator('portfolio-rebalance')">
+                  <div class="calculator-card-title">Portfolio Rebalancing</div>
+                  <div class="calculator-card-desc">Calculate adjustments to maintain asset allocation</div>
+                </div>
+                
+                <!-- Arbitrage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('arbitrage')">
+                  <div class="calculator-card-title">Arbitrage Calculator</div>
+                  <div class="calculator-card-desc">Calculate arbitrage opportunities</div>
+                </div>
+                
+                <!-- ULIP Calculator -->
+                <div class="calculator-card" onclick="openCalculator('ulip')">
+                  <div class="calculator-card-title">ULIP Calculator</div>
+                  <div class="calculator-card-desc">Unit Linked Insurance Plan returns</div>
+                </div>
+                
+                <!-- PPF Calculator -->
+                <div class="calculator-card" onclick="openCalculator('ppf')">
+                  <div class="calculator-card-title">PPF Calculator</div>
+                  <div class="calculator-card-desc">Public Provident Fund maturity calculator</div>
+                </div>
+                
+                <!-- ELSS Calculator -->
+                <div class="calculator-card" onclick="openCalculator('elss')">
+                  <div class="calculator-card-title">ELSS Calculator</div>
+                  <div class="calculator-card-desc">Tax-saving mutual fund returns</div>
+                </div>
+                
+                <!-- Recurring Deposit Calculator -->
+                <div class="calculator-card" onclick="openCalculator('recurring-deposit')">
+                  <div class="calculator-card-title">Recurring Deposit Calculator</div>
+                  <div class="calculator-card-desc">Calculate RD maturity amount</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Credit & Debt Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Credit & Debt Calculators</h2>
+              <div class="calculators-grid">
+                <!-- Credit Card Payoff Calculator -->
+                <div class="calculator-card" onclick="openCalculator('credit-card-payoff')">
+                  <div class="calculator-card-title">Credit Card Payoff</div>
+                  <div class="calculator-card-desc">Plan to pay off credit card debt</div>
+                </div>
+                
+                <!-- Debt Repayment Calculator -->
+                <div class="calculator-card" onclick="openCalculator('debt-repayment')">
+                  <div class="calculator-card-title">Debt Repayment Calculator</div>
+                  <div class="calculator-card-desc">Snowball method for debt payoff</div>
+                </div>
+                
+                <!-- Debt Consolidation Calculator -->
+                <div class="calculator-card" onclick="openCalculator('debt-consolidation')">
+                  <div class="calculator-card-title">Debt Consolidation Calculator</div>
+                  <div class="calculator-card-desc">Evaluate consolidating multiple debts</div>
+                </div>
+                
+                <!-- Credit Score Impact Estimator -->
+                <div class="calculator-card" onclick="openCalculator('credit-score')">
+                  <div class="calculator-card-title">Credit Score Impact</div>
+                  <div class="calculator-card-desc">Estimate how actions affect credit score</div>
+                </div>
+                
+                <!-- Minimum Payment Calculator -->
+                <div class="calculator-card" onclick="openCalculator('minimum-payment')">
+                  <div class="calculator-card-title">Minimum Payment Calculator</div>
+                  <div class="calculator-card-desc">See cost of making minimum payments</div>
+                </div>
+                
+                <!-- Balance Transfer Calculator -->
+                <div class="calculator-card" onclick="openCalculator('balance-transfer')">
+                  <div class="calculator-card-title">Balance Transfer Calculator</div>
+                  <div class="calculator-card-desc">Evaluate credit card balance transfers</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Loan & Mortgage Calculators -->
+            <div class="calculators-section">
+              <h2 class="section-title">Loan & Mortgage Calculators</h2>
+              <div class="calculators-grid">
+                <!-- EMI Calculator -->
+                <div class="calculator-card" onclick="openCalculator('emi')">
+                  <div class="calculator-card-title">EMI Calculator</div>
+                  <div class="calculator-card-desc">Equated Monthly Installment calculation</div>
+                </div>
+                
+                <!-- Home Loan Calculator -->
+                <div class="calculator-card" onclick="openCalculator('home-loan')">
+                  <div class="calculator-card-title">Home Loan Calculator</div>
+                  <div class="calculator-card-desc">Calculate home loan EMIs and interest</div>
+                </div>
+                
+                <!-- Personal Loan Calculator -->
+                <div class="calculator-card" onclick="openCalculator('personal-loan')">
+                  <div class="calculator-card-title">Personal Loan Calculator</div>
+                  <div class="calculator-card-desc">Calculate personal loan EMIs</div>
+                </div>
+                
+                <!-- Car Loan Calculator -->
+                <div class="calculator-card" onclick="openCalculator('car-loan')">
+                  <div class="calculator-card-title">Car Loan Calculator</div>
+                  <div class="calculator-card-desc">Calculate auto loan payments</div>
+                </div>
+                
+                <!-- Loan Affordability Calculator -->
+                <div class="calculator-card" onclick="openCalculator('loan-affordability')">
+                  <div class="calculator-card-title">Loan Affordability</div>
+                  <div class="calculator-card-desc">Determine how much you can borrow</div>
+                </div>
+                
+                <!-- Loan Tenure Calculator -->
+                <div class="calculator-card" onclick="openCalculator('loan-tenure')">
+                  <div class="calculator-card-title">Loan Tenure Calculator</div>
+                  <div class="calculator-card-desc">Calculate loan duration based on EMI</div>
+                </div>
+                
+                <!-- Loan Interest Rate Calculator -->
+                <div class="calculator-card" onclick="openCalculator('loan-interest')">
+                  <div class="calculator-card-title">Loan Interest Rate</div>
+                  <div class="calculator-card-desc">Calculate effective interest rate</div>
+                </div>
+                
+                <!-- Loan Eligibility Calculator -->
+                <div class="calculator-card" onclick="openCalculator('loan-eligibility')">
+                  <div class="calculator-card-title">Loan Eligibility</div>
+                  <div class="calculator-card-desc">Check eligibility for various loans</div>
+                </div>
+                
+                <!-- Mortgage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('mortgage')">
+                  <div class="calculator-card-title">Mortgage Calculator</div>
+                  <div class="calculator-card-desc">Calculate mortgage payments</div>
+                </div>
+                
+                <!-- Mortgage Refinance Calculator -->
+                <div class="calculator-card" onclick="openCalculator('mortgage-refinance')">
+                  <div class="calculator-card-title">Mortgage Refinance</div>
+                  <div class="calculator-card-desc">Evaluate refinancing options</div>
+                </div>
+                
+                <!-- Interest-Only Mortgage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('interest-only-mortgage')">
+                  <div class="calculator-card-title">Interest-Only Mortgage</div>
+                  <div class="calculator-card-desc">Calculate interest-only payments</div>
+                </div>
+                
+                <!-- Biweekly Mortgage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('biweekly-mortgage')">
+                  <div class="calculator-card-title">Biweekly Mortgage</div>
+                  <div class="calculator-card-desc">Calculate biweekly payment savings</div>
+                </div>
+                
+                <!-- Reverse Mortgage Calculator -->
+                <div class="calculator-card" onclick="openCalculator('reverse-mortgage')">
+                  <div class="calculator-card-title">Reverse Mortgage</div>
+                  <div class="calculator-card-desc">Calculate reverse mortgage payments</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Calculator Popups -->
+        <div id="calculator-popup" class="calculator-popup">
+          <div class="calculator-container">
+            <div class="calculator-header">
+              <div class="calculator-title" id="calculator-title">Calculator</div>
+              <button class="close-calculator" onclick="closeCalculator()">×</button>
+            </div>
+            <div class="calculator-body" id="calculator-body">
+              <!-- Calculator forms will be inserted here dynamically -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer content from original HTML -->
+        <footer class="relative overflow-hidden">
+          <!-- Footer content -->
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Open calculator popup
+    function openCalculator(calculatorType) {
+      const popup = document.getElementById('calculator-popup');
+      const title = document.getElementById('calculator-title');
+      const body = document.getElementById('calculator-body');
+      
+      // Set title based on calculator type
+      title.textContent = getCalculatorTitle(calculatorType);
+      
+      // Set calculator form based on type
+      body.innerHTML = getCalculatorForm(calculatorType);
+      
+      // Show popup
+      popup.classList.add('active');
+    }
+    
+    // Close calculator popup
+    function closeCalculator() {
+      document.getElementById('calculator-popup').classList.remove('active');
+    }
+    
+    // Get calculator title based on type
+    function getCalculatorTitle(type) {
+      const titles = {
+        'equity-sip': 'Equity SIP Calculator',
+        'stt': 'STT Calculator',
+        'brokerage': 'Brokerage Calculator',
+        // Add titles for all calculator types
+      };
+      return titles[type] || 'Financial Calculator';
+    }
+    
+    // Get calculator form based on type
+    function getCalculatorForm(type) {
+      // Each calculator would have its own form structure
+      // Here's an example for the SIP calculator
+      if (type === 'equity-sip') {
+        return `
+          <div class="calculator-form-group">
+            <label class="calculator-label">Monthly Investment (₹)</label>
+            <input type="number" class="calculator-input" id="sip-amount" placeholder="e.g. 5000">
+          </div>
+          <div class="calculator-form-group">
+            <label class="calculator-label">Investment Period (years)</label>
+            <input type="number" class="calculator-input" id="sip-period" placeholder="e.g. 10">
+          </div>
+          <div class="calculator-form-group">
+            <label class="calculator-label">Expected Return Rate (% p.a.)</label>
+            <input type="number" step="0.01" class="calculator-input" id="sip-rate" placeholder="e.g. 12">
+          </div>
+          <button class="calculator-button" onclick="calculateSIP()">Calculate</button>
+          <div class="calculator-result" id="sip-result">
+            <div class="calculator-result-title">Results</div>
+            <div id="sip-result-content"></div>
+          </div>
+        `;
+      }
+      
+      // Example for STT calculator
+      if (type === 'stt') {
+        return `
+          <div class="calculator-form-group">
+            <label class="calculator-label">Transaction Type</label>
+            <select class="calculator-input" id="stt-type">
+              <option value="equity-delivery">Equity Delivery</option>
+              <option value="equity-intraday">Equity Intraday</option>
+              <option value="futures">Futures</option>
+              <option value="options">Options</option>
+            </select>
+          </div>
+          <div class="calculator-form-group">
+            <label class="calculator-label">Turnover Amount (₹)</label>
+            <input type="number" class="calculator-input" id="stt-amount" placeholder="e.g. 100000">
+          </div>
+          <button class="calculator-button" onclick="calculateSTT()">Calculate STT</button>
+          <div class="calculator-result" id="stt-result">
+            <div class="calculator-result-title">STT Payable</div>
+            <div id="stt-result-content"></div>
+          </div>
+        `;
+      }
+      
+      // Add forms for all other calculator types...
+      
+      // Default form if type not recognized
+      return `
+        <div class="calculator-form-group">
+          <p>Calculator coming soon. This feature is under development.</p>
+        </div>
+      `;
+    }
+    
+    // Example calculation function for SIP
+    function calculateSIP() {
+      const amount = parseFloat(document.getElementById('sip-amount').value);
+      const period = parseFloat(document.getElementById('sip-period').value);
+      const rate = parseFloat(document.getElementById('sip-rate').value);
+      
+      if (isNaN(amount) || isNaN(period) || isNaN(rate)) {
+        alert('Please enter valid numbers in all fields');
+        return;
+      }
+      
+      const monthlyRate = rate / 100 / 12;
+      const months = period * 12;
+      const futureValue = amount * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
+      const totalInvestment = amount * months;
+      const totalReturns = futureValue - totalInvestment;
+      
+      const resultContent = document.getElementById('sip-result-content');
+      resultContent.innerHTML = `
+        <p>Invested Amount: ₹${totalInvestment.toLocaleString('en-IN')}</p>
+        <p>Estimated Returns: ₹${totalReturns.toLocaleString('en-IN')}</p>
+        <p>Total Value: ₹${futureValue.toLocaleString('en-IN')}</p>
+      `;
+      
+      document.getElementById('sip-result').style.display = 'block';
+    }
+    
+    // Example calculation function for STT
+    function calculateSTT() {
+      const type = document.getElementById('stt-type').value;
+      const amount = parseFloat(document.getElementById('stt-amount').value);
+      
+      if (isNaN(amount)) {
+        alert('Please enter a valid amount');
+        return;
+      }
+      
+      let sttRate = 0;
+      let stt = 0;
+      
+      switch(type) {
+        case 'equity-delivery':
+          sttRate = 0.1; // 0.1%
+          stt = amount * sttRate / 100;
+          break;
+        case 'equity-intraday':
+          sttRate = 0.025; // 0.025%
+          stt = amount * sttRate / 100;
+          break;
+        case 'futures':
+          sttRate = 0.01; // 0.01%
+          stt = amount * sttRate / 100;
+          break;
+        case 'options':
+          sttRate = 0.05; // 0.05% of premium
+          stt = amount * sttRate / 100;
+          break;
+      }
+      
+      const resultContent = document.getElementById('stt-result-content');
+      resultContent.innerHTML = `
+        <p>STT Rate: ${sttRate}%</p>
+        <p>STT Payable: ₹${stt.toLocaleString('en-IN')}</p>
+      `;
+      
+      document.getElementById('stt-result').style.display = 'block';
+    }
+    
+    // Add calculation functions for all other calculators...
+  </script>
+</body>
+</html>
