@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F&O Breakeven Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">F&O Breakeven Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="entry-price" class="block text-sm font-medium text-gray-700 mb-1">Entry Price (₹)</label>
+                    <input type="range" id="entry-price" min="100" max="5000" step="10" value="1500" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹100</span>
+                        <span id="entry-price-value" class="font-medium">₹1,500</span>
+                        <span class="text-sm text-gray-500">₹5,000</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="premium-paid" class="block text-sm font-medium text-gray-700 mb-1">Premium Paid (₹)</label>
+                    <input type="range" id="premium-paid" min="1" max="500" step="1" value="50" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1</span>
+                        <span id="premium-paid-value" class="font-medium">₹50</span>
+                        <span class="text-sm text-gray-500">₹500</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="position-type" class="block text-sm font-medium text-gray-700 mb-1">Position Type</label>
+                    <select id="position-type" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option value="long-call">Long Call</option>
+                        <option value="short-call">Short Call</option>
+                        <option value="long-put">Long Put</option>
+                        <option value="short-put">Short Put</option>
+                        <option value="long-future">Long Future</option>
+                        <option value="short-future">Short Future</option>
+                    </select>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Breakeven Results</h2>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Breakeven Price</h3>
+                            <p id="breakeven-result" class="text-2xl font-bold text-blue-600">₹1,550</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateBreakeven(entryPrice, premiumPaid, positionType) {
+            switch(positionType) {
+                case 'long-call':
+                    return entryPrice + premiumPaid;
+                case 'short-call':
+                    return entryPrice + premiumPaid;
+                case 'long-put':
+                    return entryPrice - premiumPaid;
+                case 'short-put':
+                    return entryPrice - premiumPaid;
+                case 'long-future':
+                    return entryPrice; // No premium for futures
+                case 'short-future':
+                    return entryPrice; // No premium for futures
+                default:
+                    return entryPrice;
+            }
+        }
+        
+        function updateBreakevenCalculation() {
+            const entryPrice = parseFloat(document.getElementById('entry-price').value);
+            const premiumPaid = parseFloat(document.getElementById('premium-paid').value);
+            const positionType = document.getElementById('position-type').value;
+            
+            const breakeven = calculateBreakeven(entryPrice, premiumPaid, positionType);
+            
+            document.getElementById('breakeven-result').textContent = formatCurrency(breakeven);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatCurrency(parseFloat(input.value));
+                updateBreakevenCalculation();
+            });
+        });
+        
+        document.getElementById('position-type').addEventListener('change', updateBreakevenCalculation);
+        
+        updateBreakevenCalculation();
+    </script>
+</body>
+</html>

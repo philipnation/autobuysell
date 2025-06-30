@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expense Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Monthly Expense Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="housing" class="block text-sm font-medium text-gray-700 mb-1">Housing (₹)</label>
+                    <input type="range" id="housing" min="0" max="100000" step="1000" value="15000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="housing-value" class="font-medium">₹15,000</span>
+                        <span class="text-sm text-gray-500">₹1L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="food" class="block text-sm font-medium text-gray-700 mb-1">Food (₹)</label>
+                    <input type="range" id="food" min="0" max="50000" step="500" value="8000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="food-value" class="font-medium">₹8,000</span>
+                        <span class="text-sm text-gray-500">₹50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="transportation" class="block text-sm font-medium text-gray-700 mb-1">Transportation (₹)</label>
+                    <input type="range" id="transportation" min="0" max="30000" step="500" value="5000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="transportation-value" class="font-medium">₹5,000</span>
+                        <span class="text-sm text-gray-500">₹30K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="utilities" class="block text-sm font-medium text-gray-700 mb-1">Utilities (₹)</label>
+                    <input type="range" id="utilities" min="0" max="20000" step="500" value="3000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="utilities-value" class="font-medium">₹3,000</span>
+                        <span class="text-sm text-gray-500">₹20K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="entertainment" class="block text-sm font-medium text-gray-700 mb-1">Entertainment (₹)</label>
+                    <input type="range" id="entertainment" min="0" max="30000" step="500" value="4000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="entertainment-value" class="font-medium">₹4,000</span>
+                        <span class="text-sm text-gray-500">₹30K</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Monthly Expense Summary</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Monthly Expenses</h3>
+                            <p id="total-expenses" class="text-2xl font-bold text-blue-600">₹35,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Percentage of Income</h3>
+                            <p id="percentage-income" class="text-2xl font-bold text-blue-600">50%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateTotalExpenses() {
+            const housing = parseFloat(document.getElementById('housing').value);
+            const food = parseFloat(document.getElementById('food').value);
+            const transportation = parseFloat(document.getElementById('transportation').value);
+            const utilities = parseFloat(document.getElementById('utilities').value);
+            const entertainment = parseFloat(document.getElementById('entertainment').value);
+            
+            const totalExpenses = housing + food + transportation + utilities + entertainment;
+            // Assuming average income of ₹70,000 for percentage calculation
+            const percentageIncome = (totalExpenses / 70000) * 100;
+            
+            return {
+                totalExpenses,
+                percentageIncome
+            };
+        }
+        
+        function updateExpenseCalculation() {
+            const { totalExpenses, percentageIncome } = calculateTotalExpenses();
+            
+            document.getElementById('total-expenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('percentage-income').textContent = percentageIncome.toFixed(0) + '%';
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatCurrency(parseFloat(input.value));
+                updateExpenseCalculation();
+            });
+        });
+        
+        updateExpenseCalculation();
+    </script>
+</body>
+</html>

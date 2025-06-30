@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Capital Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Working Capital Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="current-assets" class="block text-sm font-medium text-gray-700 mb-1">Current Assets (₹)</label>
+                    <input type="range" id="current-assets" min="100000" max="50000000" step="10000" value="2000000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1L</span>
+                        <span id="current-assets-value" class="font-medium">₹2M</span>
+                        <span class="text-sm text-gray-500">₹5Cr</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="current-liabilities" class="block text-sm font-medium text-gray-700 mb-1">Current Liabilities (₹)</label>
+                    <input type="range" id="current-liabilities" min="100000" max="30000000" step="10000" value="1500000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1L</span>
+                        <span id="current-liabilities-value" class="font-medium">₹1.5M</span>
+                        <span class="text-sm text-gray-500">₹3Cr</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Working Capital Analysis</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Working Capital</h3>
+                            <p id="working-capital" class="text-2xl font-bold text-blue-600">₹500,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Current Ratio</h3>
+                            <p id="current-ratio" class="text-2xl font-bold text-blue-600">1.33</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p><strong>Interpretation:</strong></p>
+                        <ul class="list-disc pl-5 mt-1">
+                            <li>Current Ratio &lt; 1: Potential liquidity issues</li>
+                            <li>Current Ratio = 1-2: Healthy</li>
+                            <li>Current Ratio &gt; 2: May indicate inefficient use of assets</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            if (amount >= 10000000) {
+                return '₹' + (amount / 10000000).toFixed(1) + 'Cr';
+            } else if (amount >= 100000) {
+                return '₹' + (amount / 100000).toFixed(1) + 'L';
+            } else if (amount >= 1000) {
+                return '₹' + (amount / 1000).toFixed(1) + 'K';
+            }
+            return '₹' + amount.toFixed(0);
+        }
+        
+        function calculateWorkingCapital(currentAssets, currentLiabilities) {
+            const workingCapital = currentAssets - currentLiabilities;
+            const currentRatio = currentAssets / currentLiabilities;
+            
+            return {
+                workingCapital,
+                currentRatio
+            };
+        }
+        
+        function updateWorkingCapitalCalculation() {
+            const currentAssets = parseFloat(document.getElementById('current-assets').value);
+            const currentLiabilities = parseFloat(document.getElementById('current-liabilities').value);
+            
+            const { workingCapital, currentRatio } = calculateWorkingCapital(currentAssets, currentLiabilities);
+            
+            document.getElementById('working-capital').textContent = formatCurrency(workingCapital);
+            document.getElementById('current-ratio').textContent = currentRatio.toFixed(2);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatCurrency(parseFloat(input.value));
+                updateWorkingCapitalCalculation();
+            });
+        });
+        
+        updateWorkingCapitalCalculation();
+    </script>
+</body>
+</html>

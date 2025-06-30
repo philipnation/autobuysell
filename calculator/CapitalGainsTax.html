@@ -3,70 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capital Gains Tax Calculator</title>
+    <title>Capital Gains Tax Estimator</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Capital Gains Tax Calculator</h1>
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Capital Gains Tax Estimator</h1>
             
             <div class="space-y-6">
                 <div>
-                    <label for="purchase-price" class="block text-sm font-medium text-gray-700 mb-1">Purchase Price ($)</label>
-                    <input type="range" id="purchase-price" min="1000" max="1000000" step="1000" value="50000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <label for="purchase-price" class="block text-sm font-medium text-gray-700 mb-1">Purchase Price (₹)</label>
+                    <input type="range" id="purchase-price" min="1000" max="10000000" step="1000" value="500000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
                     <div class="flex justify-between items-center mt-2">
-                        <span class="text-sm text-gray-500">$1K</span>
-                        <span id="purchase-price-value" class="font-medium">$50,000</span>
-                        <span class="text-sm text-gray-500">$1M</span>
+                        <span class="text-sm text-gray-500">₹1K</span>
+                        <span id="purchase-price-value" class="font-medium">₹500,000</span>
+                        <span class="text-sm text-gray-500">₹10M</span>
                     </div>
                 </div>
                 
                 <div>
-                    <label for="sale-price" class="block text-sm font-medium text-gray-700 mb-1">Sale Price ($)</label>
-                    <input type="range" id="sale-price" min="1000" max="2000000" step="1000" value="75000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <label for="sale-price" class="block text-sm font-medium text-gray-700 mb-1">Sale Price (₹)</label>
+                    <input type="range" id="sale-price" min="1000" max="20000000" step="1000" value="800000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
                     <div class="flex justify-between items-center mt-2">
-                        <span class="text-sm text-gray-500">$1K</span>
-                        <span id="sale-price-value" class="font-medium">$75,000</span>
-                        <span class="text-sm text-gray-500">$2M</span>
+                        <span class="text-sm text-gray-500">₹1K</span>
+                        <span id="sale-price-value" class="font-medium">₹800,000</span>
+                        <span class="text-sm text-gray-500">₹20M</span>
                     </div>
                 </div>
                 
                 <div>
-                    <label for="holding-period" class="block text-sm font-medium text-gray-700 mb-1">Holding Period</label>
-                    <select id="holding-period" class="w-full p-2 border border-gray-300 rounded-lg">
-                        <option value="short">Short-term (≤1 year)</option>
-                        <option value="long">Long-term (>1 year)</option>
+                    <label for="holding-period" class="block text-sm font-medium text-gray-700 mb-1">Holding Period (years)</label>
+                    <input type="range" id="holding-period" min="0" max="30" step="1" value="3" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0 years</span>
+                        <span id="holding-period-value" class="font-medium">3 years</span>
+                        <span class="text-sm text-gray-500">30 years</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="asset-type" class="block text-sm font-medium text-gray-700 mb-1">Asset Type</label>
+                    <select id="asset-type" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option value="equity">Equity (Stocks, Mutual Funds)</option>
+                        <option value="real-estate">Real Estate</option>
+                        <option value="debt">Debt Instruments</option>
+                        <option value="other">Other Assets</option>
                     </select>
                 </div>
                 
-                <div>
-                    <label for="tax-rate" class="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
-                    <input type="range" id="tax-rate" min="0" max="40" step="1" value="15" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-sm text-gray-500">0%</span>
-                        <span id="tax-rate-value" class="font-medium">15%</span>
-                        <span class="text-sm text-gray-500">40%</span>
-                    </div>
-                </div>
-                
-                <div class="bg-purple-50 p-4 rounded-lg">
-                    <h2 class="text-lg font-semibold text-purple-800 mb-4">Tax Calculation</h2>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Capital Gains Results</h2>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-white p-3 rounded-lg shadow">
                             <h3 class="text-sm font-medium text-gray-500">Capital Gain</h3>
-                            <p id="capital-gain" class="text-2xl font-bold text-purple-600">$25,000</p>
+                            <p id="capital-gain" class="text-2xl font-bold text-blue-600">₹300,000</p>
                         </div>
                         
                         <div class="bg-white p-3 rounded-lg shadow">
-                            <h3 class="text-sm font-medium text-gray-500">Tax Owed</h3>
-                            <p id="tax-owed" class="text-2xl font-bold text-purple-600">$3,750</p>
+                            <h3 class="text-sm font-medium text-gray-500">Tax Rate</h3>
+                            <p id="tax-rate" class="text-2xl font-bold text-blue-600">20%</p>
                         </div>
                         
                         <div class="bg-white p-3 rounded-lg shadow">
-                            <h3 class="text-sm font-medium text-gray-500">Net Proceeds</h3>
-                            <p id="net-proceeds" class="text-2xl font-bold text-purple-600">$71,250</p>
+                            <h3 class="text-sm font-medium text-gray-500">Tax Amount</h3>
+                            <p id="tax-amount" class="text-2xl font-bold text-blue-600">₹60,000</p>
                         </div>
                     </div>
                 </div>
@@ -76,45 +78,90 @@
 
     <script>
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         }
         
-        function calculateCapitalGains() {
-            const purchasePrice = parseFloat(document.getElementById('purchase-price').value);
-            const salePrice = parseFloat(document.getElementById('sale-price').value);
-            const holdingPeriod = document.getElementById('holding-period').value;
-            let taxRate = parseFloat(document.getElementById('tax-rate').value);
+        function calculateCapitalGainsTax(purchasePrice, salePrice, holdingPeriod, assetType) {
+            const capitalGain = salePrice - purchasePrice;
+            let taxRate = 0;
+            let taxAmount = 0;
             
-            // Adjust tax rate for short-term gains
-            if (holdingPeriod === 'short') {
-                taxRate = Math.min(taxRate + 10, 40); // Short-term typically higher
-                document.getElementById('tax-rate').value = taxRate;
-                document.getElementById('tax-rate-value').textContent = taxRate + '%';
+            if (assetType === 'equity') {
+                if (holdingPeriod >= 1) {
+                    taxRate = 0.1; // LTCG on equity
+                    taxAmount = capitalGain * taxRate;
+                } else {
+                    taxRate = 0.15; // STCG on equity
+                    taxAmount = capitalGain * taxRate;
+                }
+            } else if (assetType === 'real-estate') {
+                if (holdingPeriod >= 2) {
+                    // Indexation benefit would be applied in real scenarios
+                    taxRate = 0.2;
+                    taxAmount = capitalGain * taxRate;
+                } else {
+                    taxRate = 0.3; // As per income tax slab
+                    taxAmount = capitalGain * taxRate;
+                }
+            } else if (assetType === 'debt') {
+                if (holdingPeriod >= 3) {
+                    taxRate = 0.2; // With indexation
+                    taxAmount = capitalGain * taxRate;
+                } else {
+                    taxRate = 0.3; // As per income tax slab
+                    taxAmount = capitalGain * taxRate;
+                }
+            } else {
+                // Other assets
+                if (holdingPeriod >= 3) {
+                    taxRate = 0.2;
+                    taxAmount = capitalGain * taxRate;
+                } else {
+                    taxRate = 0.3;
+                    taxAmount = capitalGain * taxRate;
+                }
             }
             
-            const capitalGain = salePrice - purchasePrice;
-            const taxOwed = capitalGain * (taxRate / 100);
-            const netProceeds = salePrice - taxOwed;
+            return {
+                capitalGain,
+                taxRate: taxRate * 100,
+                taxAmount
+            };
+        }
+        
+        function updateCapitalGainsCalculation() {
+            const purchasePrice = parseFloat(document.getElementById('purchase-price').value);
+            const salePrice = parseFloat(document.getElementById('sale-price').value);
+            const holdingPeriod = parseFloat(document.getElementById('holding-period').value);
+            const assetType = document.getElementById('asset-type').value;
+            
+            const { capitalGain, taxRate, taxAmount } = calculateCapitalGainsTax(purchasePrice, salePrice, holdingPeriod, assetType);
             
             document.getElementById('capital-gain').textContent = formatCurrency(capitalGain);
-            document.getElementById('tax-owed').textContent = formatCurrency(taxOwed);
-            document.getElementById('net-proceeds').textContent = formatCurrency(netProceeds);
+            document.getElementById('tax-rate').textContent = taxRate.toFixed(0) + '%';
+            document.getElementById('tax-amount').textContent = formatCurrency(taxAmount);
         }
         
         document.querySelectorAll('input[type="range"]').forEach(input => {
             const valueElement = document.getElementById(`${input.id}-value`);
             
+            const formatValue = (val) => {
+                if (input.id.includes('period')) {
+                    return `${val} years`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
             input.addEventListener('input', () => {
-                valueElement.textContent = input.id.includes('rate') 
-                    ? input.value + '%' 
-                    : formatCurrency(parseFloat(input.value));
-                calculateCapitalGains();
+                valueElement.textContent = formatValue(input.value);
+                updateCapitalGainsCalculation();
             });
         });
         
-        document.getElementById('holding-period').addEventListener('change', calculateCapitalGains);
+        document.getElementById('asset-type').addEventListener('change', updateCapitalGainsCalculation);
         
-        calculateCapitalGains();
+        updateCapitalGainsCalculation();
     </script>
 </body>
 </html>

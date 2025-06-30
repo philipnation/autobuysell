@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Retirement Income Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Post-Retirement Income Planner</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="retirement-corpus" class="block text-sm font-medium text-gray-700 mb-1">Retirement Corpus (₹)</label>
+                    <input type="range" id="retirement-corpus" min="1000000" max="100000000" step="100000" value="5000000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹10L</span>
+                        <span id="retirement-corpus-value" class="font-medium">₹50L</span>
+                        <span class="text-sm text-gray-500">₹10Cr</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="annual-withdrawal" class="block text-sm font-medium text-gray-700 mb-1">Annual Withdrawal (₹)</label>
+                    <input type="range" id="annual-withdrawal" min="100000" max="5000000" step="10000" value="300000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1L</span>
+                        <span id="annual-withdrawal-value" class="font-medium">₹300,000</span>
+                        <span class="text-sm text-gray-500">₹50L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="post-retirement-return" class="block text-sm font-medium text-gray-700 mb-1">Post-Retirement Return (%)</label>
+                    <input type="range" id="post-retirement-return" min="1" max="15" step="0.1" value="6" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="post-retirement-return-value" class="font-medium">6%</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="inflation-rate" class="block text-sm font-medium text-gray-700 mb-1">Inflation Rate (%)</label>
+                    <input type="range" id="inflation-rate" min="0" max="10" step="0.1" value="4" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="inflation-rate-value" class="font-medium">4%</span>
+                        <span class="text-sm text-gray-500">10%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Retirement Income Results</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Years Corpus Will Last</h3>
+                            <p id="years-lasting" class="text-2xl font-bold text-blue-600">25</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Safe Withdrawal Rate</h3>
+                            <p id="safe-rate" class="text-2xl font-bold text-blue-600">4%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            if (amount >= 10000000) {
+                return '₹' + (amount / 10000000).toFixed(1) + 'Cr';
+            } else if (amount >= 100000) {
+                return '₹' + (amount / 100000).toFixed(1) + 'L';
+            }
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateRetirementIncome(corpus, withdrawal, returnRate, inflationRate) {
+            // Simplified calculation for demonstration
+            const realReturnRate = returnRate - inflationRate;
+            const safeWithdrawalRate = realReturnRate > 0 ? realReturnRate : 0;
+            const yearsLasting = Math.log(1 - (corpus * (realReturnRate/100) / withdrawal)) / Math.log(1 / (1 + realReturnRate/100));
+            
+            return {
+                yearsLasting: Math.round(yearsLasting),
+                safeWithdrawalRate: safeWithdrawalRate.toFixed(1)
+            };
+        }
+        
+        function updateRetirementIncomeCalculation() {
+            const corpus = parseFloat(document.getElementById('retirement-corpus').value);
+            const withdrawal = parseFloat(document.getElementById('annual-withdrawal').value);
+            const returnRate = parseFloat(document.getElementById('post-retirement-return').value);
+            const inflationRate = parseFloat(document.getElementById('inflation-rate').value);
+            
+            const { yearsLasting, safeWithdrawalRate } = calculateRetirementIncome(corpus, withdrawal, returnRate, inflationRate);
+            
+            document.getElementById('years-lasting').textContent = yearsLasting;
+            document.getElementById('safe-rate').textContent = safeWithdrawalRate + '%';
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('return') || input.id.includes('inflation')) {
+                    return `${val}%`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateRetirementIncomeCalculation();
+            });
+        });
+        
+        updateRetirementIncomeCalculation();
+    </script>
+</body>
+</html>

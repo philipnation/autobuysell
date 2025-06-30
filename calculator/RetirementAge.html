@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Age Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Retirement Age Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="current-age" class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
+                    <input type="range" id="current-age" min="18" max="70" step="1" value="30" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">18</span>
+                        <span id="current-age-value" class="font-medium">30</span>
+                        <span class="text-sm text-gray-500">70</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="retirement-savings" class="block text-sm font-medium text-gray-700 mb-1">Current Retirement Savings (₹)</label>
+                    <input type="range" id="retirement-savings" min="0" max="50000000" step="10000" value="500000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="retirement-savings-value" class="font-medium">₹500,000</span>
+                        <span class="text-sm text-gray-500">₹5Cr</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="annual-contribution" class="block text-sm font-medium text-gray-700 mb-1">Annual Contribution (₹)</label>
+                    <input type="range" id="annual-contribution" min="0" max="2000000" step="10000" value="100000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="annual-contribution-value" class="font-medium">₹100,000</span>
+                        <span class="text-sm text-gray-500">₹20L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="expected-return" class="block text-sm font-medium text-gray-700 mb-1">Expected Return (%)</label>
+                    <input type="range" id="expected-return" min="1" max="20" step="0.1" value="7" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="expected-return-value" class="font-medium">7%</span>
+                        <span class="text-sm text-gray-500">20%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="retirement-expenses" class="block text-sm font-medium text-gray-700 mb-1">Annual Retirement Expenses (₹)</label>
+                    <input type="range" id="retirement-expenses" min="100000" max="5000000" step="10000" value="1200000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1L</span>
+                        <span id="retirement-expenses-value" class="font-medium">₹1,200,000</span>
+                        <span class="text-sm text-gray-500">₹50L</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Retirement Results</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Earliest Retirement Age</h3>
+                            <p id="retirement-age" class="text-2xl font-bold text-blue-600">55</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Retirement Corpus</h3>
+                            <p id="retirement-corpus" class="text-2xl font-bold text-blue-600">₹2.4Cr</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            if (amount >= 10000000) {
+                return '₹' + (amount / 10000000).toFixed(1) + 'Cr';
+            } else if (amount >= 100000) {
+                return '₹' + (amount / 100000).toFixed(1) + 'L';
+            }
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateRetirement(currentAge, savings, annualContribution, returnRate, expenses) {
+            // Simplified calculation for demonstration
+            const yearsToRetirement = Math.max(0, Math.log((expenses * 25) / savings) / Math.log(1 + returnRate/100));
+            const retirementAge = Math.min(70, Math.round(currentAge + yearsToRetirement));
+            const corpus = expenses * 25; // Using 25x rule
+            
+            return {
+                retirementAge,
+                corpus
+            };
+        }
+        
+        function updateRetirementCalculation() {
+            const currentAge = parseFloat(document.getElementById('current-age').value);
+            const savings = parseFloat(document.getElementById('retirement-savings').value);
+            const annualContribution = parseFloat(document.getElementById('annual-contribution').value);
+            const returnRate = parseFloat(document.getElementById('expected-return').value);
+            const expenses = parseFloat(document.getElementById('retirement-expenses').value);
+            
+            const { retirementAge, corpus } = calculateRetirement(currentAge, savings, annualContribution, returnRate, expenses);
+            
+            document.getElementById('retirement-age').textContent = retirementAge;
+            document.getElementById('retirement-corpus').textContent = formatCurrency(corpus);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('age')) {
+                    return val;
+                } else if (input.id.includes('return')) {
+                    return `${val}%`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateRetirementCalculation();
+            });
+        });
+        
+        updateRetirementCalculation();
+    </script>
+</body>
+</html>

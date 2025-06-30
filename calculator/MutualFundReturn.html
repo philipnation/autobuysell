@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Fund Return Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Mutual Fund Return Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="investment-amount" class="block text-sm font-medium text-gray-700 mb-1">Investment Amount (₹)</label>
+                    <input type="range" id="investment-amount" min="1000" max="1000000" step="1000" value="50000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1K</span>
+                        <span id="investment-amount-value" class="font-medium">₹50,000</span>
+                        <span class="text-sm text-gray-500">₹10L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="sip-amount" class="block text-sm font-medium text-gray-700 mb-1">Monthly SIP (₹)</label>
+                    <input type="range" id="sip-amount" min="0" max="50000" step="500" value="5000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="sip-amount-value" class="font-medium">₹5,000</span>
+                        <span class="text-sm text-gray-500">₹50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investment-period" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (years)</label>
+                    <input type="range" id="investment-period" min="1" max="30" step="1" value="10" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1 year</span>
+                        <span id="investment-period-value" class="font-medium">10 years</span>
+                        <span class="text-sm text-gray-500">30 years</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="expected-return" class="block text-sm font-medium text-gray-700 mb-1">Expected Return (%)</label>
+                    <input type="range" id="expected-return" min="5" max="25" step="0.5" value="12" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="expected-return-value" class="font-medium">12%</span>
+                        <span class="text-sm text-gray-500">25%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Projected Returns</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Invested</h3>
+                            <p id="total-invested" class="text-2xl font-bold text-blue-600">₹6.5L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Estimated Returns</h3>
+                            <p id="estimated-returns" class="text-2xl font-bold text-blue-600">₹11.6L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow col-span-2">
+                            <h3 class="text-sm font-medium text-gray-500">Total Value</h3>
+                            <p id="total-value" class="text-2xl font-bold text-blue-600">₹18.1L</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            if (amount >= 10000000) {
+                return '₹' + (amount / 10000000).toFixed(1) + 'Cr';
+            } else if (amount >= 100000) {
+                return '₹' + (amount / 100000).toFixed(1) + 'L';
+            }
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateMFReturns(lumpsum, sip, years, returnRate) {
+            const months = years * 12;
+            const monthlyRate = returnRate / 100 / 12;
+            
+            // Future value of lumpsum investment
+            const fvLumpsum = lumpsum * Math.pow(1 + monthlyRate, months);
+            
+            // Future value of SIP (annuity)
+            const fvSip = sip * (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+            
+            const totalValue = fvLumpsum + fvSip;
+            const totalInvested = lumpsum + (sip * months);
+            const estimatedReturns = totalValue - totalInvested;
+            
+            return {
+                totalInvested,
+                estimatedReturns,
+                totalValue
+            };
+        }
+        
+        function updateMFCalculation() {
+            const lumpsum = parseFloat(document.getElementById('investment-amount').value);
+            const sip = parseFloat(document.getElementById('sip-amount').value);
+            const years = parseFloat(document.getElementById('investment-period').value);
+            const returnRate = parseFloat(document.getElementById('expected-return').value);
+            
+            const { totalInvested, estimatedReturns, totalValue } = calculateMFReturns(lumpsum, sip, years, returnRate);
+            
+            document.getElementById('total-invested').textContent = formatCurrency(totalInvested);
+            document.getElementById('estimated-returns').textContent = formatCurrency(estimatedReturns);
+            document.getElementById('total-value').textContent = formatCurrency(totalValue);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('return')) {
+                    return `${val}%`;
+                } else if (input.id.includes('period')) {
+                    return `${val} years`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateMFCalculation();
+            });
+        });
+        
+        updateMFCalculation();
+    </script>
+</body>
+</html>

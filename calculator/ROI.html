@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">ROI Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="initial-investment" class="block text-sm font-medium text-gray-700 mb-1">Initial Investment (₹)</label>
+                    <input type="range" id="initial-investment" min="1000" max="10000000" step="1000" value="100000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1K</span>
+                        <span id="initial-investment-value" class="font-medium">₹100,000</span>
+                        <span class="text-sm text-gray-500">₹10M</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="final-value" class="block text-sm font-medium text-gray-700 mb-1">Final Value (₹)</label>
+                    <input type="range" id="final-value" min="1000" max="20000000" step="1000" value="150000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹1K</span>
+                        <span id="final-value-value" class="font-medium">₹150,000</span>
+                        <span class="text-sm text-gray-500">₹20M</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investment-period" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (years)</label>
+                    <input type="range" id="investment-period" min="1" max="30" step="1" value="5" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1 year</span>
+                        <span id="investment-period-value" class="font-medium">5 years</span>
+                        <span class="text-sm text-gray-500">30 years</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">ROI Results</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Return</h3>
+                            <p id="total-return" class="text-2xl font-bold text-blue-600">₹50,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">ROI Percentage</h3>
+                            <p id="roi-percentage" class="text-2xl font-bold text-blue-600">50%</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Annualized ROI</h3>
+                            <p id="annualized-roi" class="text-2xl font-bold text-blue-600">10%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        function calculateROI(initial, final, years) {
+            const totalReturn = final - initial;
+            const roiPercentage = ((final - initial) / initial) * 100;
+            const annualizedROI = (Math.pow(final / initial, 1/years) - 1;
+            return {
+                totalReturn,
+                roiPercentage,
+                annualizedROI: annualizedROI * 100
+            };
+        }
+        
+        function updateROICalculation() {
+            const initial = parseFloat(document.getElementById('initial-investment').value);
+            const final = parseFloat(document.getElementById('final-value').value);
+            const years = parseFloat(document.getElementById('investment-period').value);
+            
+            const { totalReturn, roiPercentage, annualizedROI } = calculateROI(initial, final, years);
+            
+            document.getElementById('total-return').textContent = formatCurrency(totalReturn);
+            document.getElementById('roi-percentage').textContent = roiPercentage.toFixed(1) + '%';
+            document.getElementById('annualized-roi').textContent = annualizedROI.toFixed(1) + '%';
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('period')) {
+                    return `${val} years`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateROICalculation();
+            });
+        });
+        
+        updateROICalculation();
+    </script>
+</body>
+</html>

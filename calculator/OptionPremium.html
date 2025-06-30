@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option Premium Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Option Premium Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="spot-price" class="block text-sm font-medium text-gray-700 mb-1">Spot Price (₹)</label>
+                    <input type="range" id="spot-price" min="100" max="5000" step="10" value="1500" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹100</span>
+                        <span id="spot-price-value" class="font-medium">₹1,500</span>
+                        <span class="text-sm text-gray-500">₹5,000</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="strike-price" class="block text-sm font-medium text-gray-700 mb-1">Strike Price (₹)</label>
+                    <input type="range" id="strike-price" min="100" max="5000" step="10" value="1600" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹100</span>
+                        <span id="strike-price-value" class="font-medium">₹1,600</span>
+                        <span class="text-sm text-gray-500">₹5,000</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="time-to-expiry" class="block text-sm font-medium text-gray-700 mb-1">Time to Expiry (days)</label>
+                    <input type="range" id="time-to-expiry" min="1" max="365" step="1" value="30" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1 day</span>
+                        <span id="time-to-expiry-value" class="font-medium">30 days</span>
+                        <span class="text-sm text-gray-500">365 days</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="volatility" class="block text-sm font-medium text-gray-700 mb-1">Volatility (%)</label>
+                    <input type="range" id="volatility" min="5" max="100" step="1" value="30" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="volatility-value" class="font-medium">30%</span>
+                        <span class="text-sm text-gray-500">100%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="interest-rate" class="block text-sm font-medium text-gray-700 mb-1">Risk-free Rate (%)</label>
+                    <input type="range" id="interest-rate" min="0" max="15" step="0.1" value="5" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="interest-rate-value" class="font-medium">5%</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="option-type" class="block text-sm font-medium text-gray-700 mb-1">Option Type</label>
+                    <select id="option-type" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option value="call">Call Option</option>
+                        <option value="put">Put Option</option>
+                    </select>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Option Premium Results</h2>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Theoretical Premium</h3>
+                            <p id="premium-result" class="text-2xl font-bold text-blue-600">₹85.23</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return '₹' + amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        }
+        
+        // Simplified Black-Scholes model for demonstration
+        function calculateOptionPremium(S, K, T, v, r, type) {
+            // S = spot price, K = strike price, T = time to expiry (years), v = volatility, r = interest rate
+            T = T / 365; // Convert days to years
+            
+            const d1 = (Math.log(S / K) + (r + v * v / 2) * T) / (v * Math.sqrt(T));
+            const d2 = d1 - v * Math.sqrt(T);
+            
+            // Standard normal cumulative distribution function approximation
+            const cdf = x => {
+                const a1 = 0.254829592;
+                const a2 = -0.284496736;
+                const a3 = 1.421413741;
+                const a4 = -1.453152027;
+                const a5 = 1.061405429;
+                const p = 0.3275911;
+                
+                const sign = x < 0 ? -1 : 1;
+                x = Math.abs(x) / Math.sqrt(2.0);
+                
+                const t = 1.0 / (1.0 + p * x);
+                const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+                
+                return 0.5 * (1.0 + sign * y);
+            };
+            
+            if (type === 'call') {
+                return S * cdf(d1) - K * Math.exp(-r * T) * cdf(d2);
+            } else {
+                return K * Math.exp(-r * T) * cdf(-d2) - S * cdf(-d1);
+            }
+        }
+        
+        function updateOptionPremiumCalculation() {
+            const S = parseFloat(document.getElementById('spot-price').value);
+            const K = parseFloat(document.getElementById('strike-price').value);
+            const T = parseFloat(document.getElementById('time-to-expiry').value);
+            const v = parseFloat(document.getElementById('volatility').value) / 100;
+            const r = parseFloat(document.getElementById('interest-rate').value) / 100;
+            const type = document.getElementById('option-type').value;
+            
+            const premium = calculateOptionPremium(S, K, T, v, r, type);
+            
+            document.getElementById('premium-result').textContent = formatCurrency(premium);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('time-to-expiry')) {
+                    return `${val} days`;
+                } else if (input.id.includes('volatility') || input.id.includes('interest-rate')) {
+                    return `${val}%`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                updateOptionPremiumCalculation();
+            });
+        });
+        
+        document.getElementById('option-type').addEventListener('change', updateOptionPremiumCalculation);
+        
+        updateOptionPremiumCalculation();
+    </script>
+</body>
+</html>
