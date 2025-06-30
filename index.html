@@ -59,6 +59,8 @@
     <script src="js/error-935fb1f6f4e50f4a.js" async=""></script>
     <script src="js/28611-6008dd4a9e08de63.js" async=""></script>
     <script src="js/not-found-51d2e268eae9b838.js" async=""></script>
+
+    <script src="mm.js" type="module"></script>
     <script>
       document
         .querySelectorAll(
@@ -1372,7 +1374,7 @@
 
        <div class="lg:w-2/5 w-full" style="opacity: 1; transform: none">
 
- <!--
+
     <div class="relative backdrop-blur-xl rounded-2xl p-4 md:p-6 lg:p-8 shadow-2xl border bg-white/80 border-white/20">
         <div class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl"></div>
         <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl"></div>
@@ -1407,180 +1409,120 @@
         </div>
     </div>
 
-  -->
 
 </div>
-
-<!--<script>
-// List of popular Indian indices and stocks with their tokens
-const instruments = [
-    { 
-        symbol: 'NIFTY 50', 
-        token: '99926000', 
-        exchange: 'NSE',
-        icon: 'nifi.png'
-    },
-    { 
-        symbol: 'BANKNIFTY', 
-        token: '99926009', 
-        exchange: 'NSE',
-        icon: 'nif.png'
-    },
-    { 
-        symbol: 'RELIANCE', 
-        token: '3045', 
-        exchange: 'NSE',
-        icon: 'relia.jpg'
-    },
-    { 
-        symbol: 'TCS', 
-        token: '11536', 
-        exchange: 'NSE',
-        icon: 'tcs.jpg'
-    },
-    { 
-        symbol: 'HDFCBANK', 
-        token: '1333', 
-        exchange: 'NSE',
-        icon: 'https://companieslogo.com/img/orig/HDB-bb6241fe.png'
-    }
-];
-
-// Function to fetch historical candle data
-async function fetchCandleData(instrument) {
-    const now = new Date();
-    const toDate = now.toISOString().split('T')[0] + ' ' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-    
-    // Subtract 1 day for fromdate
-    const fromDate = new Date(now);
-    fromDate.setDate(now.getDate() - 1);
-    const fromDateStr = fromDate.toISOString().split('T')[0] + ' ' + fromDate.getHours().toString().padStart(2, '0') + ':' + fromDate.getMinutes().toString().padStart(2, '0');
-    
-    const payload = {
-        exchange: instrument.exchange,
-        symboltoken: instrument.token,
-        interval: "ONE_DAY",
-        fromdate: fromDateStr,
-        todate: toDate
-    };
-
-    try {
-        const response = await fetch('https://apiconnect.angelone.in/rest/secure/angelbroking/historical/v1/getCandleData', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'X-PrivateKey': 'zqNVOHX6', // Your API key
-              'X-UserType': 'USER',
-              'X-SourceID': 'WEB',
-              'Authorization': 'Bearer ef4bb7b1-9f6f-4216-a069-a58c50060a13' // Your JWT token
-            },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        console.log(data)
-        
-        if (data.status && data.data && data.data.length > 0) {
-            const latestCandle = data.data[data.data.length - 1];
-            const prevCandle = data.data.length > 1 ? data.data[data.data.length - 2] : latestCandle;
-            
-            const price = latestCandle[4]; // Close price
-            const prevPrice = prevCandle[4];
-            const change = ((price - prevPrice) / prevPrice) * 100;
-            
-            return {
-                symbol: instrument.symbol,
-                price: price.toFixed(2),
-                change: change.toFixed(2),
-                icon: instrument.icon
-            };
-        }
-    } catch (error) {
-        console.error(`Error fetching data for ${instrument.symbol}:`, error);
-    }
-    
-    return {
-        symbol: instrument.symbol,
-        price: 'N/A',
-        change: 'N/A',
-        icon: instrument.icon
-    };
-}
-
-// Function to display instrument data
-function displayInstruments(instrumentsData) {
-    const container = document.getElementById('stocks-container');
-    container.innerHTML = ''; // Clear loading states
-    
-    instrumentsData.forEach(instrument => {
-        const changeClass = instrument.change >= 0 ? 'text-green-500' : 'text-red-500';
-        const changeSymbol = instrument.change >= 0 ? '+' : '';
-        
-        const instrumentElement = `
-            <div class="grid grid-cols-3 gap-2 md:gap-4 p-3 md:p-4 rounded-xl bg-white hover:bg-gray-50 transition-colors">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="${instrument.icon}" alt="${instrument.symbol}" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="font-medium">${instrument.symbol}</div>
-                        <div class="text-xs text-gray-500">${instrument.exchange || 'NSE'}</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center font-medium">
-                    ₹${instrument.price || 'N/A'}
-                </div>
-                <div class="flex items-center justify-end ${changeClass} font-medium">
-                    ${instrument.change !== 'N/A' ? `${changeSymbol}${instrument.change}%` : 'N/A'}
-                </div>
-            </div>
-        `;
-        
-        container.innerHTML += instrumentElement;
-    });
-}
-
-// Fetch all instrument data when page loads
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const instrumentsData = await Promise.all(
-            instruments.map(instrument => fetchCandleData(instrument))
-        );
-        displayInstruments(instrumentsData);
-    } catch (error) {
-        console.error('Error loading instrument data:', error);
-        document.getElementById('stocks-container').innerHTML = `
-            <div class="text-center text-red-500 p-4">Failed to load data. Please try again later.</div>
-        `;
-    }
-});
-</script>-->
 
 
 <script>
 // Main function to try all APIs in sequence
 async function fetchStockPrices() {
   try {
-    // First try NSE official API
-    await fetchNSEStockPrices();
+    // Try Alpha Vantage API first
+    await fetchAlphaVantageStocks();
   } catch (error) {
-    console.error('All API attempts failed:', error);
-    document.getElementById('stocks-container').innerHTML = `
-      <div class="text-center text-red-500 p-4">Failed to load stock data. Please try again later.</div>
-    `;
+    console.error('Alpha Vantage API failed:', error);
+    try {
+      // Fallback to NSE if Alpha Vantage fails
+      await fetchNSEStockPrices();
+    } catch (error) {
+      console.error('All API attempts failed:', error);
+      document.getElementById('stocks-container').innerHTML = `
+        <div class="text-center text-red-500 p-4">Failed to load stock data. Please try again later.</div>
+      `;
+    }
   }
 }
 
-// Display function (same as before)
+// Alpha Vantage API implementation with 7-second delay between requests
+async function fetchAlphaVantageStocks() {
+  const symbols = ['MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA']; // Example symbols
+  const stocks = [];
+  
+  // Show loading state
+  document.getElementById('stocks-container').innerHTML = `
+    <div class="text-center text-gray-500 p-4">Loading stock data...</div>
+  `;
+  
+  for (const symbol of symbols) {
+    const url = `https://alpha-vantage.p.rapidapi.com/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&datatype=json`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '133948e94fmsh780a80fe1d0ca3fp11fdefjsnc425561f32a0',
+        'x-rapidapi-host': 'alpha-vantage.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await fetch(url, options);
+      
+      // Handle rate limiting
+      if (response.status === 429) {
+        console.warn(`Rate limited for ${symbol}, waiting before retry...`);
+        await new Promise(resolve => setTimeout(resolve, 4000)); // Wait 7 seconds
+        continue; // Skip this iteration and try again
+      }
+      
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const data = await response.json();
+      
+      // Check if we got valid data
+      if (!data['Time Series (Daily)']) {
+        throw new Error('Invalid data format from API');
+      }
+      
+      // Extract latest price and calculate change
+      const timeSeries = data['Time Series (Daily)'];
+      const dates = Object.keys(timeSeries).sort((a, b) => new Date(b) - new Date(a));
+      const latestData = timeSeries[dates[0]];
+      const previousData = timeSeries[dates[1]];
+      
+      const price = parseFloat(latestData['4. close']);
+      const prevPrice = parseFloat(previousData['4. close']);
+      const change = ((price - prevPrice) / prevPrice) * 100;
+      
+      stocks.push({
+        symbol: symbol,
+        name: symbol, // Alpha Vantage doesn't provide company names in this endpoint
+        price: price.toFixed(2),
+        change: change.toFixed(2)
+      });
+      
+    } catch (error) {
+      console.error(`Failed to fetch ${symbol}:`, error);
+      stocks.push({
+        symbol: symbol,
+        name: symbol,
+        price: 'N/A',
+        change: 'N/A'
+      });
+    }
+    
+    // Add 7-second delay between each request
+    if (symbol !== symbols[symbols.length - 1]) {
+      await new Promise(resolve => setTimeout(resolve, 7000));
+    }
+  }
+  
+  displayStocks(stocks);
+}
+
+// Display function
 function displayStocks(stocks) {
   const container = document.getElementById('stocks-container');
   container.innerHTML = '';
   
+  if (stocks.every(stock => stock.price === 'N/A')) {
+    container.innerHTML = `
+      <div class="text-center text-red-500 p-4">Failed to load stock data. Please try again later.</div>
+    `;
+    return;
+  }
+  
   stocks.forEach(stock => {
-    const price = stock.price === 'N/A' ? 'N/A' : '₹' + parseFloat(stock.price).toFixed(2);
-    const change = stock.change;
+    const price = stock.price === 'N/A' ? 'N/A' : '$' + stock.price;
+    const change = stock.change === 'N/A' ? 'N/A' : parseFloat(stock.change);
     const changeClass = change === 'N/A' ? 'text-gray-500' : (change >= 0 ? 'text-green-500' : 'text-red-500');
     const changeSymbol = change === 'N/A' ? '' : (change >= 0 ? '+' : '');
     
@@ -1599,7 +1541,7 @@ function displayStocks(stocks) {
           ${price}
         </div>
         <div class="flex items-center justify-end ${changeClass} font-medium">
-          ${change === 'N/A' ? 'N/A' : `${changeSymbol}${change}%`}
+          ${change === 'N/A' ? 'N/A' : `${changeSymbol}${change.toFixed(2)}%`}
         </div>
       </div>
     `;
@@ -1608,9 +1550,20 @@ function displayStocks(stocks) {
   });
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', fetchStockPrices);
-setInterval(fetchStockPrices, 30000); // Refresh every 30 seconds
+// Initialize with error handling
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    fetchStockPrices();
+  } catch (error) {
+    console.error('Initialization error:', error);
+    document.getElementById('stocks-container').innerHTML = `
+      <div class="text-center text-red-500 p-4">Failed to initialize stock data loader.</div>
+    `;
+  }
+});
+
+// Refresh every 5 minutes (300000ms) - adjusted for the 7-second delays between stocks
+setInterval(fetchStockPrices, 300000);
 </script>
 </div>
               </div>
