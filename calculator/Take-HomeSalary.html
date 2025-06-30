@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take-Home Salary Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Take-Home Salary Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="gross-salary" class="block text-sm font-medium text-gray-700 mb-1">Gross Salary (₹)</label>
+                    <input type="range" id="gross-salary" min="300000" max="5000000" step="10000" value="1000000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹3L</span>
+                        <span id="gross-salary-value" class="font-medium">₹10L</span>
+                        <span class="text-sm text-gray-500">₹50L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="deductions" class="block text-sm font-medium text-gray-700 mb-1">Deductions (₹)</label>
+                    <input type="range" id="deductions" min="0" max="250000" step="10000" value="50000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="deductions-value" class="font-medium">₹50K</span>
+                        <span class="text-sm text-gray-500">₹2.5L</span>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-purple-800 mb-4">Salary Breakdown</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Taxable Income</h3>
+                            <p id="taxable-income" class="text-2xl font-bold text-purple-600">₹9.5L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Income Tax</h3>
+                            <p id="income-tax" class="text-2xl font-bold text-purple-600">₹1.1L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Professional Tax</h3>
+                            <p id="professional-tax" class="text-2xl font-bold text-purple-600">₹2,500</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Take-Home Salary</h3>
+                            <p id="take-home-salary" class="text-2xl font-bold text-purple-600">₹8.4L</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculateSalary() {
+            const grossSalary = parseFloat(document.getElementById('gross-salary').value);
+            const deductions = parseFloat(document.getElementById('deductions').value);
+            
+            const taxableIncome = grossSalary - deductions;
+            let tax = 0;
+            
+            // Simplified tax calculation (old regime)
+            if (taxableIncome > 1000000) {
+                tax += (taxableIncome - 1000000) * 0.3;
+                tax += 112500; // For income up to 10L
+            } else if (taxableIncome > 500000) {
+                tax += (taxableIncome - 500000) * 0.2;
+                tax += 12500; // For income up to 5L
+            } else if (taxableIncome > 250000) {
+                tax += (taxableIncome - 250000) * 0.05;
+            }
+            
+            const cess = tax * 0.04;
+            const professionalTax = 2500; // Standard amount
+            const totalTax = tax + cess + professionalTax;
+            const takeHomeSalary = grossSalary - totalTax;
+            
+            document.getElementById('taxable-income').textContent = formatINR(taxableIncome);
+            document.getElementById('income-tax').textContent = formatINR(tax);
+            document.getElementById('professional-tax').textContent = formatINR(professionalTax);
+            document.getElementById('take-home-salary').textContent = formatINR(takeHomeSalary);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                valueElement.textContent = formatINR(parseFloat(this.value));
+                calculateSalary();
+            });
+        });
+        
+        calculateSalary();
+    </script>
+</body>
+</html>

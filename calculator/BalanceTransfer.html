@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance Transfer Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Balance Transfer Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="balance" class="block text-sm font-medium text-gray-700 mb-1">Current Balance ($)</label>
+                    <input type="range" id="balance" min="500" max="50000" step="500" value="5000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$500</span>
+                        <span id="balance-value" class="font-medium">$5,000</span>
+                        <span class="text-sm text-gray-500">$50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="current-rate" class="block text-sm font-medium text-gray-700 mb-1">Current APR (%)</label>
+                    <input type="range" id="current-rate" min="5" max="30" step="0.5" value="18.9" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="current-rate-value" class="font-medium">18.9%</span>
+                        <span class="text-sm text-gray-500">30%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="transfer-rate" class="block text-sm font-medium text-gray-700 mb-1">Transfer APR (%)</label>
+                    <input type="range" id="transfer-rate" min="0" max="5" step="0.1" value="2.9" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="transfer-rate-value" class="font-medium">2.9%</span>
+                        <span class="text-sm text-gray-500">5%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="promo-period" class="block text-sm font-medium text-gray-700 mb-1">Promotional Period (months)</label>
+                    <input type="range" id="promo-period" min="6" max="24" step="1" value="12" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">6 mo</span>
+                        <span id="promo-period-value" class="font-medium">12 mo</span>
+                        <span class="text-sm text-gray-500">24 mo</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="monthly-payment" class="block text-sm font-medium text-gray-700 mb-1">Monthly Payment ($)</label>
+                    <input type="range" id="monthly-payment" min="50" max="2000" step="50" value="300" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$50</span>
+                        <span id="monthly-payment-value" class="font-medium">$300</span>
+                        <span class="text-sm text-gray-500">$2K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="transfer-fee" class="block text-sm font-medium text-gray-700 mb-1">Transfer Fee (%)</label>
+                    <input type="range" id="transfer-fee" min="0" max="5" step="0.1" value="3" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="transfer-fee-value" class="font-medium">3%</span>
+                        <span class="text-sm text-gray-500">5%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-green-800 mb-4">Transfer Savings</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Current Payoff Time</h3>
+                            <p id="current-payoff" class="text-2xl font-bold text-green-600">22 mo</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Transfer Payoff Time</h3>
+                            <p id="transfer-payoff" class="text-2xl font-bold text-green-600">18 mo</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Interest Savings</h3>
+                            <p id="interest-savings" class="text-2xl font-bold text-green-600">$450</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Savings</h3>
+                            <p id="total-savings" class="text-2xl font-bold text-green-600">$350</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateTransfer() {
+            const balance = parseFloat(document.getElementById('balance').value);
+            const currentRate = parseFloat(document.getElementById('current-rate').value);
+            const transferRate = parseFloat(document.getElementById('transfer-rate').value);
+            const promoPeriod = parseFloat(document.getElementById('promo-period').value);
+            const monthlyPayment = parseFloat(document.getElementById('monthly-payment').value);
+            const transferFee = parseFloat(document.getElementById('transfer-fee').value);
+            
+            // Transfer fee
+            const feeAmount = balance * (transferFee / 100);
+            const totalBalance = balance + feeAmount;
+            
+            // Current payoff calculation
+            const currentMonthlyRate = currentRate / 100 / 12;
+            let currentMonths = 0;
+            let currentRemaining = balance;
+            let currentInterest = 0;
+            
+            while (currentRemaining > 0 && currentMonths < 600) {
+                const interest = currentRemaining * currentMonthlyRate;
+                currentInterest += interest;
+                const principal = monthlyPayment - interest;
+                currentRemaining -= principal;
+                currentMonths++;
+            }
+            
+            // Transfer payoff calculation
+            const transferMonthlyRate = transferRate / 100 / 12;
+            let transferMonths = 0;
+            let transferRemaining = totalBalance;
+            let transferInterest = 0;
+            
+            while (transferRemaining > 0 && transferMonths < 600) {
+                const rate = transferMonths < promoPeriod ? transferMonthlyRate : currentMonthlyRate;
+                const interest = transferRemaining * rate;
+                transferInterest += interest;
+                const principal = monthlyPayment - interest;
+                transferRemaining -= principal;
+                transferMonths++;
+            }
+            
+            const interestSavings = currentInterest - transferInterest;
+            const totalSavings = interestSavings - feeAmount;
+            
+            document.getElementById('current-payoff').textContent = currentMonths + ' mo';
+            document.getElementById('transfer-payoff').textContent = transferMonths + ' mo';
+            document.getElementById('interest-savings').textContent = formatCurrency(interestSavings);
+            document.getElementById('total-savings').textContent = formatCurrency(totalSavings);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('rate') || input.id.includes('fee')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else if (input.id.includes('period')) {
+                    return `${val} mo`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateTransfer();
+            });
+        });
+        
+        calculateTransfer();
+    </script>
+</body>
+</html>

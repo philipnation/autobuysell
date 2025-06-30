@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tax Calculator (India)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Income Tax Calculator (India)</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="annual-income" class="block text-sm font-medium text-gray-700 mb-1">Annual Income (₹)</label>
+                    <input type="range" id="annual-income" min="250000" max="5000000" step="10000" value="1000000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹2.5L</span>
+                        <span id="annual-income-value" class="font-medium">₹10L</span>
+                        <span class="text-sm text-gray-500">₹50L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="deductions" class="block text-sm font-medium text-gray-700 mb-1">Deductions (₹)</label>
+                    <input type="range" id="deductions" min="0" max="250000" step="10000" value="50000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="deductions-value" class="font-medium">₹50K</span>
+                        <span class="text-sm text-gray-500">₹2.5L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="regime" class="block text-sm font-medium text-gray-700 mb-1">Tax Regime</label>
+                    <select id="regime" class="w-full p-2 border border-gray-300 rounded-lg">
+                        <option value="new">New Regime</option>
+                        <option value="old">Old Regime</option>
+                    </select>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-green-800 mb-4">Tax Calculation</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Taxable Income</h3>
+                            <p id="taxable-income" class="text-2xl font-bold text-green-600">₹9.5L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Income Tax</h3>
+                            <p id="income-tax" class="text-2xl font-bold text-green-600">₹1.1L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Cess (4%)</h3>
+                            <p id="cess" class="text-2xl font-bold text-green-600">₹4,400</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Tax</h3>
+                            <p id="total-tax" class="text-2xl font-bold text-green-600">₹1.14L</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculateTax() {
+            const income = parseFloat(document.getElementById('annual-income').value);
+            const deductions = parseFloat(document.getElementById('deductions').value);
+            const regime = document.getElementById('regime').value;
+            
+            let taxableIncome = income - deductions;
+            if (regime === 'new') taxableIncome = income; // New regime has limited deductions
+            
+            let tax = 0;
+            
+            if (regime === 'old') {
+                // Old regime tax slabs
+                if (taxableIncome > 1000000) {
+                    tax += (taxableIncome - 1000000) * 0.3;
+                    taxableIncome = 1000000;
+                }
+                if (taxableIncome > 500000) {
+                    tax += (taxableIncome - 500000) * 0.2;
+                    taxableIncome = 500000;
+                }
+                if (taxableIncome > 250000) {
+                    tax += (taxableIncome - 250000) * 0.05;
+                }
+            } else {
+                // New regime tax slabs
+                if (taxableIncome > 1500000) {
+                    tax += (taxableIncome - 1500000) * 0.3;
+                    taxableIncome = 1500000;
+                }
+                if (taxableIncome > 1200000) {
+                    tax += (taxableIncome - 1200000) * 0.2;
+                    taxableIncome = 1200000;
+                }
+                if (taxableIncome > 900000) {
+                    tax += (taxableIncome - 900000) * 0.15;
+                    taxableIncome = 900000;
+                }
+                if (taxableIncome > 600000) {
+                    tax += (taxableIncome - 600000) * 0.1;
+                    taxableIncome = 600000;
+                }
+                if (taxableIncome > 300000) {
+                    tax += (taxableIncome - 300000) * 0.05;
+                }
+            }
+            
+            const cess = tax * 0.04;
+            const totalTax = tax + cess;
+            
+            document.getElementById('taxable-income').textContent = formatINR(taxableIncome);
+            document.getElementById('income-tax').textContent = formatINR(tax);
+            document.getElementById('cess').textContent = formatINR(cess);
+            document.getElementById('total-tax').textContent = formatINR(totalTax);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                valueElement.textContent = formatINR(parseFloat(this.value));
+                calculateTax();
+            });
+        });
+        
+        document.getElementById('regime').addEventListener('change', calculateTax);
+        
+        calculateTax();
+    </script>
+</body>
+</html>

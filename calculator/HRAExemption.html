@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRA Exemption Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">HRA Exemption Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="basic-salary" class="block text-sm font-medium text-gray-700 mb-1">Basic Salary (₹)</label>
+                    <input type="range" id="basic-salary" min="10000" max="500000" step="1000" value="50000" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹10K</span>
+                        <span id="basic-salary-value" class="font-medium">₹50K</span>
+                        <span class="text-sm text-gray-500">₹5L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="hra-received" class="block text-sm font-medium text-gray-700 mb-1">HRA Received (₹)</label>
+                    <input type="range" id="hra-received" min="0" max="100000" step="1000" value="20000" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="hra-received-value" class="font-medium">₹20K</span>
+                        <span class="text-sm text-gray-500">₹1L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="rent-paid" class="block text-sm font-medium text-gray-700 mb-1">Rent Paid (₹)</label>
+                    <input type="range" id="rent-paid" min="0" max="100000" step="1000" value="25000" class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹0</span>
+                        <span id="rent-paid-value" class="font-medium">₹25K</span>
+                        <span class="text-sm text-gray-500">₹1L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="metro-city" class="block text-sm font-medium text-gray-700 mb-1">Metro City</label>
+                    <select id="metro-city" class="w-full p-2 border border-gray-300 rounded-lg">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <div class="bg-orange-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-orange-800 mb-4">HRA Exemption</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Actual HRA Received</h3>
+                            <p id="hra-received-display" class="text-2xl font-bold text-orange-600">₹20K</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Exempt Amount</h3>
+                            <p id="hra-exempt" class="text-2xl font-bold text-orange-600">₹18K</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Taxable HRA</h3>
+                            <p id="hra-taxable" class="text-2xl font-bold text-orange-600">₹2K</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculateHRA() {
+            const basicSalary = parseFloat(document.getElementById('basic-salary').value);
+            const hraReceived = parseFloat(document.getElementById('hra-received').value);
+            const rentPaid = parseFloat(document.getElementById('rent-paid').value);
+            const isMetro = document.getElementById('metro-city').value === 'yes';
+            
+            // Calculate HRA exemption as per three conditions
+            const condition1 = hraReceived;
+            const condition2 = rentPaid - (0.1 * basicSalary);
+            const condition3 = isMetro ? 0.5 * basicSalary : 0.4 * basicSalary;
+            
+            const exemptAmount = Math.min(condition1, condition2, condition3);
+            const taxableHRA = hraReceived - exemptAmount;
+            
+            document.getElementById('hra-received-display').textContent = formatINR(hraReceived);
+            document.getElementById('hra-exempt').textContent = formatINR(Math.max(0, exemptAmount));
+            document.getElementById('hra-taxable').textContent = formatINR(Math.max(0, taxableHRA));
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                valueElement.textContent = formatINR(parseFloat(this.value));
+                calculateHRA();
+            });
+        });
+        
+        document.getElementById('metro-city').addEventListener('change', calculateHRA);
+        
+        calculateHRA();
+    </script>
+</body>
+</html>

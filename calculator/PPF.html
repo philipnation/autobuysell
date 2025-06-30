@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPF Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">PPF Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="annual-investment" class="block text-sm font-medium text-gray-700 mb-1">Annual Investment (₹)</label>
+                    <input type="range" id="annual-investment" min="500" max="150000" step="500" value="50000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹500</span>
+                        <span id="annual-investment-value" class="font-medium">₹50,000</span>
+                        <span class="text-sm text-gray-500">₹1.5L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investment-period" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (years)</label>
+                    <input type="range" id="investment-period" min="15" max="50" step="1" value="15" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">15 years</span>
+                        <span id="investment-period-value" class="font-medium">15 years</span>
+                        <span class="text-sm text-gray-500">50 years</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="interest-rate" class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+                    <input type="range" id="interest-rate" min="5" max="15" step="0.1" value="7.1" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="interest-rate-value" class="font-medium">7.1%</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-green-800 mb-4">PPF Maturity Details</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Investment</h3>
+                            <p id="total-investment" class="text-2xl font-bold text-green-600">₹7.5L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Maturity Value</h3>
+                            <p id="maturity-value" class="text-2xl font-bold text-green-600">₹13.6L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Interest</h3>
+                            <p id="total-interest" class="text-2xl font-bold text-green-600">₹6.1L</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculatePPF() {
+            const annualInvestment = parseFloat(document.getElementById('annual-investment').value);
+            const investmentPeriod = parseFloat(document.getElementById('investment-period').value);
+            const interestRate = parseFloat(document.getElementById('interest-rate').value);
+            
+            let maturityValue = 0;
+            for (let year = 1; year <= investmentPeriod; year++) {
+                maturityValue += annualInvestment * Math.pow(1 + interestRate/100, investmentPeriod - year + 1);
+            }
+            
+            const totalInvestment = annualInvestment * investmentPeriod;
+            const totalInterest = maturityValue - totalInvestment;
+            
+            document.getElementById('total-investment').textContent = formatINR(totalInvestment);
+            document.getElementById('maturity-value').textContent = formatINR(maturityValue);
+            document.getElementById('total-interest').textContent = formatINR(totalInterest);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('rate')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else if (input.id.includes('period')) {
+                    return `${val} years`;
+                } else {
+                    return formatINR(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculatePPF();
+            });
+        });
+        
+        calculatePPF();
+    </script>
+</body>
+</html>

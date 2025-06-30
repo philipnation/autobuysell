@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Fund Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Emergency Fund Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="monthly-expenses" class="block text-sm font-medium text-gray-700 mb-1">Monthly Expenses ($)</label>
+                    <input type="range" id="monthly-expenses" min="500" max="10000" step="100" value="3000" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$500</span>
+                        <span id="monthly-expenses-value" class="font-medium">$3,000</span>
+                        <span class="text-sm text-gray-500">$10K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="months" class="block text-sm font-medium text-gray-700 mb-1">Coverage (months)</label>
+                    <input type="range" id="months" min="3" max="12" step="1" value="6" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">3 mo</span>
+                        <span id="months-value" class="font-medium">6 mo</span>
+                        <span class="text-sm text-gray-500">12 mo</span>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-green-800 mb-4">Emergency Fund Target</h2>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Recommended Emergency Fund</h3>
+                            <p id="emergency-fund" class="text-2xl font-bold text-green-600">$18,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateEmergencyFund() {
+            const expenses = parseFloat(document.getElementById('monthly-expenses').value);
+            const months = parseFloat(document.getElementById('months').value);
+            
+            document.getElementById('emergency-fund').textContent = formatCurrency(expenses * months);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                valueElement.textContent = this.id.includes('months') 
+                    ? this.value + ' mo' 
+                    : formatCurrency(this.value);
+                calculateEmergencyFund();
+            });
+        });
+        
+        calculateEmergencyFund();
+    </script>
+</body>
+</html>

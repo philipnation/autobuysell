@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Payment Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Minimum Payment Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="balance" class="block text-sm font-medium text-gray-700 mb-1">Credit Card Balance ($)</label>
+                    <input type="range" id="balance" min="100" max="50000" step="100" value="5000" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$100</span>
+                        <span id="balance-value" class="font-medium">$5,000</span>
+                        <span class="text-sm text-gray-500">$50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="interest-rate" class="block text-sm font-medium text-gray-700 mb-1">Interest Rate (%)</label>
+                    <input type="range" id="interest-rate" min="5" max="30" step="0.5" value="18.9" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="interest-rate-value" class="font-medium">18.9%</span>
+                        <span class="text-sm text-gray-500">30%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="min-payment-type" class="block text-sm font-medium text-gray-700 mb-1">Minimum Payment Type</label>
+                    <select id="min-payment-type" class="w-full p-2 border border-gray-300 rounded-lg">
+                        <option value="percent">Percentage of balance (1-3%)</option>
+                        <option value="fixed">Fixed amount + percentage</option>
+                    </select>
+                </div>
+                
+                <div id="percent-container">
+                    <label for="min-percent" class="block text-sm font-medium text-gray-700 mb-1">Minimum Payment Percentage (%)</label>
+                    <input type="range" id="min-percent" min="1" max="5" step="0.1" value="2" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1%</span>
+                        <span id="min-percent-value" class="font-medium">2%</span>
+                        <span class="text-sm text-gray-500">5%</span>
+                    </div>
+                </div>
+                
+                <div id="fixed-container" class="hidden">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="fixed-amount" class="block text-sm font-medium text-gray-700 mb-1">Fixed Amount ($)</label>
+                            <input type="range" id="fixed-amount" min="10" max="100" step="5" value="25" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-sm text-gray-500">$10</span>
+                                <span id="fixed-amount-value" class="font-medium">$25</span>
+                                <span class="text-sm text-gray-500">$100</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="fixed-percent" class="block text-sm font-medium text-gray-700 mb-1">Percentage (%)</label>
+                            <input type="range" id="fixed-percent" min="0" max="5" step="0.1" value="1" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-sm text-gray-500">0%</span>
+                                <span id="fixed-percent-value" class="font-medium">1%</span>
+                                <span class="text-sm text-gray-500">5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-red-800 mb-4">Payment Impact</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Minimum Payment</h3>
+                            <p id="min-payment" class="text-2xl font-bold text-red-600">$100</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Payoff Time</h3>
+                            <p id="payoff-time" class="text-2xl font-bold text-red-600">12.5 years</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Interest</h3>
+                            <p id="total-interest" class="text-2xl font-bold text-red-600">$4,567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 bg-white p-3 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Recommended Payment</h3>
+                        <p id="recommended-payment" class="text-2xl font-bold text-red-600">$250</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateMinPayment() {
+            const balance = parseFloat(document.getElementById('balance').value);
+            const interestRate = parseFloat(document.getElementById('interest-rate').value);
+            const paymentType = document.getElementById('min-payment-type').value;
+            
+            let minPayment = 0;
+            
+            if (paymentType === 'percent') {
+                const percent = parseFloat(document.getElementById('min-percent').value);
+                minPayment = Math.max(25, balance * (percent / 100)); // $25 minimum
+            } else {
+                const fixedAmount = parseFloat(document.getElementById('fixed-amount').value);
+                const fixedPercent = parseFloat(document.getElementById('fixed-percent').value);
+                minPayment = fixedAmount + (balance * (fixedPercent / 100));
+            }
+            
+            // Calculate payoff time and interest
+            const monthlyRate = interestRate / 100 / 12;
+            let months = 0;
+            let remaining = balance;
+            let totalInterest = 0;
+            
+            while (remaining > 0 && months < 600) { // Cap at 50 years
+                const interest = remaining * monthlyRate;
+                totalInterest += interest;
+                const principal = minPayment - interest;
+                remaining -= principal;
+                months++;
+                
+                if (remaining < 0) remaining = 0;
+            }
+            
+            const years = (months / 12).toFixed(1);
+            const recommendedPayment = Math.max(minPayment * 2, balance * 0.03); // At least 3% of balance
+            
+            document.getElementById('min-payment').textContent = formatCurrency(minPayment);
+            document.getElementById('payoff-time').textContent = years + ' years';
+            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+            document.getElementById('recommended-payment').textContent = formatCurrency(recommendedPayment);
+        }
+        
+        // Toggle between payment type options
+        document.getElementById('min-payment-type').addEventListener('change', function() {
+            if (this.value === 'percent') {
+                document.getElementById('percent-container').classList.remove('hidden');
+                document.getElementById('fixed-container').classList.add('hidden');
+            } else {
+                document.getElementById('percent-container').classList.add('hidden');
+                document.getElementById('fixed-container').classList.remove('hidden');
+            }
+            calculateMinPayment();
+        });
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('rate') || input.id.includes('percent')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateMinPayment();
+            });
+        });
+        
+        calculateMinPayment();
+    </script>
+</body>
+</html>

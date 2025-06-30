@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debt Consolidation Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Debt Consolidation Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="debt1" class="block text-sm font-medium text-gray-700 mb-1">Credit Card Debt ($)</label>
+                    <input type="range" id="debt1" min="1000" max="50000" step="500" value="10000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$1K</span>
+                        <span id="debt1-value" class="font-medium">$10,000</span>
+                        <span class="text-sm text-gray-500">$50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="rate1" class="block text-sm font-medium text-gray-700 mb-1">Credit Card Rate (%)</label>
+                    <input type="range" id="rate1" min="5" max="30" step="0.5" value="18.9" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="rate1-value" class="font-medium">18.9%</span>
+                        <span class="text-sm text-gray-500">30%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="debt2" class="block text-sm font-medium text-gray-700 mb-1">Other Debt ($)</label>
+                    <input type="range" id="debt2" min="0" max="50000" step="500" value="5000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$0</span>
+                        <span id="debt2-value" class="font-medium">$5,000</span>
+                        <span class="text-sm text-gray-500">$50K</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="rate2" class="block text-sm font-medium text-gray-700 mb-1">Other Debt Rate (%)</label>
+                    <input type="range" id="rate2" min="0" max="30" step="0.5" value="12" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="rate2-value" class="font-medium">12%</span>
+                        <span class="text-sm text-gray-500">30%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="consolidation-rate" class="block text-sm font-medium text-gray-700 mb-1">Consolidation Loan Rate (%)</label>
+                    <input type="range" id="consolidation-rate" min="5" max="20" step="0.5" value="9.5" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5%</span>
+                        <span id="consolidation-rate-value" class="font-medium">9.5%</span>
+                        <span class="text-sm text-gray-500">20%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="consolidation-term" class="block text-sm font-medium text-gray-700 mb-1">Consolidation Term (years)</label>
+                    <input type="range" id="consolidation-term" min="1" max="7" step="1" value="3" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">1 year</span>
+                        <span id="consolidation-term-value" class="font-medium">3 years</span>
+                        <span class="text-sm text-gray-500">7 years</span>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-purple-800 mb-4">Consolidation Results</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Current Monthly Payments</h3>
+                            <p id="current-payments" class="text-2xl font-bold text-purple-600">$350</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Consolidated Payment</h3>
+                            <p id="consolidated-payment" class="text-2xl font-bold text-purple-600">$480</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Interest Savings</h3>
+                            <p id="interest-savings" class="text-2xl font-bold text-purple-600">$2,345</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Time Saved</h3>
+                            <p id="time-saved" class="text-2xl font-bold text-purple-600">2.5 years</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateConsolidation() {
+            const debt1 = parseFloat(document.getElementById('debt1').value);
+            const rate1 = parseFloat(document.getElementById('rate1').value);
+            const debt2 = parseFloat(document.getElementById('debt2').value);
+            const rate2 = parseFloat(document.getElementById('rate2').value);
+            const consolidationRate = parseFloat(document.getElementById('consolidation-rate').value);
+            const consolidationTerm = parseFloat(document.getElementById('consolidation-term').value);
+            
+            // Current payments (assuming minimum payments)
+            const currentPayment1 = Math.max(25, debt1 * 0.02); // 2% or $25 minimum
+            const currentPayment2 = Math.max(25, debt2 * 0.02);
+            const currentPayments = currentPayment1 + currentPayment2;
+            
+            // Consolidated loan details
+            const totalDebt = debt1 + debt2;
+            const monthlyRate = consolidationRate / 100 / 12;
+            const months = consolidationTerm * 12;
+            const consolidatedPayment = totalDebt * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                                      (Math.pow(1 + monthlyRate, months) - 1);
+            
+            // Calculate interest savings
+            // (This is simplified - actual calculation would need to simulate both scenarios)
+            const currentTotalInterest = (debt1 * (rate1/100) * 5) + (debt2 * (rate2/100) * 5); // Estimate 5 years
+            const consolidationInterest = (consolidatedPayment * months) - totalDebt;
+            const interestSavings = currentTotalInterest - consolidationInterest;
+            
+            document.getElementById('current-payments').textContent = formatCurrency(currentPayments);
+            document.getElementById('consolidated-payment').textContent = formatCurrency(consolidatedPayment);
+            document.getElementById('interest-savings').textContent = formatCurrency(Math.max(0, interestSavings));
+            document.getElementById('time-saved').textContent = '2.5 years'; // Simplified
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('rate')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else if (input.id.includes('term')) {
+                    return `${val} years`;
+                } else {
+                    return formatCurrency(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateConsolidation();
+            });
+        });
+        
+        calculateConsolidation();
+    </script>
+</body>
+</html>

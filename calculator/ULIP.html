@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULIP Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">ULIP Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="annual-premium" class="block text-sm font-medium text-gray-700 mb-1">Annual Premium (₹)</label>
+                    <input type="range" id="annual-premium" min="10000" max="500000" step="5000" value="50000" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">₹10K</span>
+                        <span id="annual-premium-value" class="font-medium">₹50,000</span>
+                        <span class="text-sm text-gray-500">₹5L</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="policy-term" class="block text-sm font-medium text-gray-700 mb-1">Policy Term (years)</label>
+                    <input type="range" id="policy-term" min="5" max="30" step="1" value="15" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">5 years</span>
+                        <span id="policy-term-value" class="font-medium">15 years</span>
+                        <span class="text-sm text-gray-500">30 years</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="expected-return" class="block text-sm font-medium text-gray-700 mb-1">Expected Return (%)</label>
+                    <input type="range" id="expected-return" min="6" max="15" step="0.5" value="10" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">6%</span>
+                        <span id="expected-return-value" class="font-medium">10%</span>
+                        <span class="text-sm text-gray-500">15%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="charges" class="block text-sm font-medium text-gray-700 mb-1">Annual Charges (%)</label>
+                    <input type="range" id="charges" min="0.5" max="3" step="0.1" value="1.5" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0.5%</span>
+                        <span id="charges-value" class="font-medium">1.5%</span>
+                        <span class="text-sm text-gray-500">3%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-blue-800 mb-4">Projected Value</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Premium Paid</h3>
+                            <p id="total-premium" class="text-2xl font-bold text-blue-600">₹7.5L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Maturity Value</h3>
+                            <p id="maturity-value" class="text-2xl font-bold text-blue-600">₹15.8L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Estimated Returns</h3>
+                            <p id="estimated-returns" class="text-2xl font-bold text-blue-600">₹8.3L</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">IRR</h3>
+                            <p id="irr" class="text-2xl font-bold text-blue-600">8.7%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', { 
+                style: 'currency', 
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function calculateULIP() {
+            const annualPremium = parseFloat(document.getElementById('annual-premium').value);
+            const policyTerm = parseFloat(document.getElementById('policy-term').value);
+            const expectedReturn = parseFloat(document.getElementById('expected-return').value);
+            const charges = parseFloat(document.getElementById('charges').value);
+            
+            const totalPremium = annualPremium * policyTerm;
+            const netReturn = expectedReturn - charges;
+            
+            // Simplified maturity value calculation
+            let maturityValue = 0;
+            for (let year = 1; year <= policyTerm; year++) {
+                maturityValue += annualPremium * Math.pow(1 + netReturn/100, policyTerm - year + 1);
+            }
+            
+            const estimatedReturns = maturityValue - totalPremium;
+            
+            // Simplified IRR calculation
+            const irr = Math.pow(maturityValue / totalPremium, 1/policyTerm) - 1;
+            
+            document.getElementById('total-premium').textContent = formatINR(totalPremium);
+            document.getElementById('maturity-value').textContent = formatINR(maturityValue);
+            document.getElementById('estimated-returns').textContent = formatINR(estimatedReturns);
+            document.getElementById('irr').textContent = (irr * 100).toFixed(1) + '%';
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            const formatValue = (val) => {
+                if (input.id.includes('return') || input.id.includes('charges')) {
+                    return `${parseFloat(val).toFixed(1)}%`;
+                } else if (input.id.includes('term')) {
+                    return `${val} years`;
+                } else {
+                    return formatINR(parseFloat(val));
+                }
+            };
+            
+            input.addEventListener('input', () => {
+                valueElement.textContent = formatValue(input.value);
+                calculateULIP();
+            });
+        });
+        
+        calculateULIP();
+    </script>
+</body>
+</html>

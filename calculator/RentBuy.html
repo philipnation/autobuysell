@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent vs Buy Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Rent vs Buy Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="home-price" class="block text-sm font-medium text-gray-700 mb-1">Home Price ($)</label>
+                    <input type="range" id="home-price" min="100000" max="2000000" step="10000" value="500000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$100K</span>
+                        <span id="home-price-value" class="font-medium">$500,000</span>
+                        <span class="text-sm text-gray-500">$2M</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="rent" class="block text-sm font-medium text-gray-700 mb-1">Monthly Rent ($)</label>
+                    <input type="range" id="rent" min="500" max="5000" step="100" value="2000" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$500</span>
+                        <span id="rent-value" class="font-medium">$2,000</span>
+                        <span class="text-sm text-gray-500">$5K</span>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-purple-800 mb-4">Break-even Analysis</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Break-even Period</h3>
+                            <p id="break-even" class="text-2xl font-bold text-purple-600">5.2 years</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Cost to Buy</h3>
+                            <p id="buy-cost" class="text-2xl font-bold text-purple-600">$550,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Cost to Rent</h3>
+                            <p id="rent-cost" class="text-2xl font-bold text-purple-600">$120,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateRentVsBuy() {
+            const homePrice = parseFloat(document.getElementById('home-price').value);
+            const rent = parseFloat(document.getElementById('rent').value);
+            
+            // Simplified calculation
+            const breakEvenYears = homePrice / (rent * 12 * 0.8); // Factor in ownership costs
+            const buyCost = homePrice * 1.1; // Including closing costs, etc.
+            const rentCost = rent * 12 * 5; // 5 years of renting
+            
+            document.getElementById('break-even').textContent = breakEvenYears.toFixed(1) + ' years';
+            document.getElementById('buy-cost').textContent = formatCurrency(buyCost);
+            document.getElementById('rent-cost').textContent = formatCurrency(rentCost);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                valueElement.textContent = formatCurrency(this.value);
+                calculateRentVsBuy();
+            });
+        });
+        
+        calculateRentVsBuy();
+    </script>
+</body>
+</html>

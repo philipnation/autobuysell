@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Rebalancing Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Portfolio Rebalancing Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="stocks-value" class="block text-sm font-medium text-gray-700 mb-1">Current Stocks Value ($)</label>
+                    <input type="range" id="stocks-value" min="0" max="1000000" step="1000" value="60000" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$0</span>
+                        <span id="stocks-value-value" class="font-medium">$60,000</span>
+                        <span class="text-sm text-gray-500">$1M</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="bonds-value" class="block text-sm font-medium text-gray-700 mb-1">Current Bonds Value ($)</label>
+                    <input type="range" id="bonds-value" min="0" max="1000000" step="1000" value="40000" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$0</span>
+                        <span id="bonds-value-value" class="font-medium">$40,000</span>
+                        <span class="text-sm text-gray-500">$1M</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="target-stocks" class="block text-sm font-medium text-gray-700 mb-1">Target Stocks Allocation (%)</label>
+                    <input type="range" id="target-stocks" min="0" max="100" step="5" value="60" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">0%</span>
+                        <span id="target-stocks-value" class="font-medium">60%</span>
+                        <span class="text-sm text-gray-500">100%</span>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-indigo-800 mb-4">Rebalancing Actions</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Current Allocation</h3>
+                            <p id="current-allocation" class="text-2xl font-bold text-indigo-600">60% / 40%</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Target Allocation</h3>
+                            <p id="target-allocation" class="text-2xl font-bold text-indigo-600">60% / 40%</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Stocks to Adjust</h3>
+                            <p id="stocks-adjust" class="text-2xl font-bold text-indigo-600">$0</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Bonds to Adjust</h3>
+                            <p id="bonds-adjust" class="text-2xl font-bold text-indigo-600">$0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculateRebalancing() {
+            const stocksValue = parseFloat(document.getElementById('stocks-value').value);
+            const bondsValue = parseFloat(document.getElementById('bonds-value').value);
+            const targetStocks = parseFloat(document.getElementById('target-stocks').value);
+            const targetBonds = 100 - targetStocks;
+            
+            const totalValue = stocksValue + bondsValue;
+            const currentStocksPct = (stocksValue / totalValue) * 100;
+            const currentBondsPct = 100 - currentStocksPct;
+            
+            // Calculate required adjustments
+            const targetStocksValue = totalValue * (targetStocks / 100);
+            const stocksAdjust = targetStocksValue - stocksValue;
+            
+            const targetBondsValue = totalValue * (targetBonds / 100);
+            const bondsAdjust = targetBondsValue - bondsValue;
+            
+            document.getElementById('current-allocation').textContent = 
+                `${currentStocksPct.toFixed(1)}% / ${currentBondsPct.toFixed(1)}%`;
+            document.getElementById('target-allocation').textContent = 
+                `${targetStocks}% / ${targetBonds}%`;
+            document.getElementById('stocks-adjust').textContent = 
+                formatCurrency(stocksAdjust);
+            document.getElementById('bonds-adjust').textContent = 
+                formatCurrency(bondsAdjust);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', () => {
+                if (input.id.includes('target')) {
+                    valueElement.textContent = input.value + '%';
+                } else {
+                    valueElement.textContent = formatCurrency(parseFloat(input.value));
+                }
+                calculateRebalancing();
+            });
+        });
+        
+        calculateRebalancing();
+    </script>
+</body>
+</html>

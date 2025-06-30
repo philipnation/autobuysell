@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Plan Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Pension Plan Calculator</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <label for="current-age" class="block text-sm font-medium text-gray-700 mb-1">Current Age</label>
+                    <input type="range" id="current-age" min="25" max="70" step="1" value="40" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">25</span>
+                        <span id="current-age-value" class="font-medium">40</span>
+                        <span class="text-sm text-gray-500">70</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="retirement-age" class="block text-sm font-medium text-gray-700 mb-1">Retirement Age</label>
+                    <input type="range" id="retirement-age" min="50" max="80" step="1" value="65" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">50</span>
+                        <span id="retirement-age-value" class="font-medium">65</span>
+                        <span class="text-sm text-gray-500">80</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="monthly-contribution" class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution ($)</label>
+                    <input type="range" id="monthly-contribution" min="100" max="5000" step="100" value="1000" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">$100</span>
+                        <span id="monthly-contribution-value" class="font-medium">$1,000</span>
+                        <span class="text-sm text-gray-500">$5K</span>
+                    </div>
+                </div>
+                
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <h2 class="text-lg font-semibold text-red-800 mb-4">Pension Projection</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Total Contributions</h3>
+                            <p id="total-contributions" class="text-2xl font-bold text-red-600">$300,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Estimated Pension Pot</h3>
+                            <p id="pension-pot" class="text-2xl font-bold text-red-600">$750,000</p>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h3 class="text-sm font-medium text-gray-500">Monthly Pension Income</h3>
+                            <p id="monthly-income" class="text-2xl font-bold text-red-600">$3,125</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+        
+        function calculatePension() {
+            const currentAge = parseInt(document.getElementById('current-age').value);
+            const retirementAge = parseInt(document.getElementById('retirement-age').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value);
+            
+            const contributionYears = retirementAge - currentAge;
+            const totalContributions = monthlyContribution * 12 * contributionYears;
+            
+            // Simplified growth calculation (5% annual return)
+            const pensionPot = totalContributions * Math.pow(1.05, contributionYears);
+            const monthlyIncome = pensionPot * 0.05 / 12; // 5% withdrawal rate
+            
+            document.getElementById('total-contributions').textContent = formatCurrency(totalContributions);
+            document.getElementById('pension-pot').textContent = formatCurrency(pensionPot);
+            document.getElementById('monthly-income').textContent = formatCurrency(monthlyIncome);
+        }
+        
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            const valueElement = document.getElementById(`${input.id}-value`);
+            
+            input.addEventListener('input', function() {
+                if (this.id.includes('age')) {
+                    valueElement.textContent = this.value;
+                } else {
+                    valueElement.textContent = formatCurrency(this.value);
+                }
+                calculatePension();
+            });
+        });
+        
+        calculatePension();
+    </script>
+</body>
+</html>
