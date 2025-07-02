@@ -59,6 +59,8 @@
     <script src="js/error-935fb1f6f4e50f4a.js" async=""></script>
     <script src="js/28611-6008dd4a9e08de63.js" async=""></script>
     <script src="js/not-found-51d2e268eae9b838.js" async=""></script>
+
+    <script src="mm.js" type="module"></script>
     <script>
       document
         .querySelectorAll(
@@ -935,13 +937,8 @@
       content="Autobuysellis a cryptocurrency exchange platform, where you can trade Bitcoin, Ethereum, Litecoin, and other cryptocurrencies."
     />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   </head>
   <body
     class="__variable_5cfdac __variable_9a8899 antialiased"
@@ -971,7 +968,7 @@
         } catch (e) {}
       })();
     </script>
-
+    
     <script>
       !(function () {
         try {
@@ -996,45 +993,33 @@
         } catch (e) {}
       })();
     </script>
-
     <div class="h-full">
       <div>
         <main>
-          <!-- Overlay for Mobile Sidebar -->
-          <div
-            id="overlay"
-            class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden"
-          >
-            <aside
-              id="mobileSidebar"
-              class="fixed inset-y-0 left-0 pt-10 z-999 w-64 transform -translate-x-full bg-white shadow-lg transition-transform duration-300 lg:hidden"
-            >
-              <div class="flex flex-col gap-4 p-4">
-                <ul class="space-y-2">
-                  <li
-                    class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"
-                  >
-                    <i class="fa fa-home mr-3"></i>Home
-                  </li>
-                  <li
-                    class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"
-                  >
-                    <i class="fa fa-bar-chart mr-3"></i>Calculator
-                  </li>
-                  <li
-                    class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"
-                  >
-                    <i class="fa fa-box mr-3"></i>Heat map
-                  </li>
-                  <li
-                    class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"
-                  >
-                    <i class="fa fa-circle mr-3"></i>About us
-                  </li>
-                </ul>
-              </div>
-            </aside>
-          </div>
+<!-- Overlay for Mobile Sidebar -->
+<div id="overlay"
+  class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden">
+          <aside id="mobileSidebar"
+            class="fixed inset-y-0 left-0 pt-10 z-999 w-64 transform -translate-x-full bg-white shadow-lg transition-transform duration-300 lg:hidden">
+            <div class="flex flex-col gap-4 p-4">
+              <ul class="space-y-2">
+                                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-home mr-3"></i>Home</li>
+                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><a href="calculator.html"><i class="fa fa-bar-chart mr-3"></i>Calculator</a></li>
+                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-box mr-3"></i>Heat map</li>
+                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer mt-3"><i class="fa fa-circle mr-3"></i>About us</li>
+                <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer"
+                      ><i class="fa fa-line-chart mr-3"></i>Live PNL</li>
+
+                      <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer"
+                      ><i class="fa fa-pie-chart mr-3"></i>New Demat</li>
+
+                      <li class="text-sm font-medium text-gray-800 hover:text-primary cursor-pointer"
+                      ><i class="fa fa-phone mr-3"></i>Contact us</li>
+              </ul>
+            </div>
+          </aside>
+
+</div>
 
           <header
             class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gradient-to-b from-white/80 to-white/40"
@@ -1045,8 +1030,7 @@
                 <div class="flex items-center gap-3 lg:gap-6">
                   <div class="flex items-center">
                     <div>
-                      <button
-                        id="menuToggle"
+                      <button id="menuToggle"
                         data-slot="button"
                         class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-hidden focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative h-11 w-11 hover:bg-primary/10 dark:hover:bg-muted dark:hover:bg-opacity-50 hover:text-primary text-foreground dark:text-foreground rounded-full"
                       >
@@ -1089,47 +1073,52 @@
                         />
                       </div>
                     </div>
-                    <span
+     <!--                <span
                       class="hidden sm:block font-bold text-xl lg:text-2xl text-zinc-900 dark:text-zinc-100"
                       style="opacity: 1; transform: none"
                       >Autobuysell</span
-                    ></a
+                    >
+                  -->
+                    </a
                   >
                 </div>
 
+
                 <style>
-                  .sm-hidden {
+                  .sm-hidden{
                     display: none;
                   }
 
                   @media screen and (min-width: 600px) {
-                    .sm-hidden {
+                    .sm-hidden{
                       display: flex;
                     }
                   }
                 </style>
                 <aside class="sm-hidden">
-                  <div class="flex items-center gap-2 lg:gap-3">
-                    <ul class="flex items-center gap-2 p-2">
-                      <li
-                        class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                <div class="flex items-center gap-2 lg:gap-3">
+                  <ul class="flex items-center gap-2 p-2 ">
+                    <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
                       >
-                        <i class="fa fa-bar-chart mr-3"></i>Calculator
-                      </li>
+                      <a href="calculator.html"><i class="fa fa-bar-chart mr-3"></i>Calculator</a></li>
 
-                      <li
-                        class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
-                      >
-                        <i class="fa fa-box mr-3"></i>Heat map
-                      </li>
+                      <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                      ><i class="fa fa-box mr-3"></i>Heat map</li>
 
-                      <li
-                        class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
-                      >
-                        <i class="fa fa-circle mr-3"></i>About us
-                      </li>
-                    </ul>
-                  </div>
+                      <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                      ><i class="fa fa-circle mr-3"></i>About us</li>
+
+                      <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                      ><i class="fa fa-line-chart mr-3"></i>Live PNL</li>
+
+                      <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                      ><i class="fa fa-pie-chart mr-3"></i>New Demat</li>
+
+                      <li class="inline-flex cursor-pointer items-center justify-center hover:text-accent-foreground h-9 px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
+                      ><i class="fa fa-phone mr-3"></i>Contact us</li>
+
+                  </ul>
+                </div>
                 </aside>
 
                 <div class="flex items-center gap-2 lg:gap-3">
@@ -1138,16 +1127,30 @@
                       class="flex items-center gap-2 p-2 rounded-full transition-colors text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800"
                       tabindex="0"
                     >
-                      <div class="w-5 h-5 rounded-full overflow-hidden">
-                        <img
-                          alt=""
-                          width="20"
-                          height="20"
-                          class="w-full h-full object-cover"
-                          src="logo.jpg"
-                        />
+                      <div class="w-5 h-5 rounded-full overflow-hidden" id="google_translate_element">
+                   <i class="fa-solid fa-language"></i>
+           
+                                            <!-- <div id="google_translate_element"></div> -->
+
                       </div>
                     </button>
+               
+
+                    <!-- <div id="google_translate_element"></div> -->
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
                   </div>
                   <button
                     class="p-2.5 rounded-lg transition-all duration-200 hidden md:flex items-center justify-center text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/70 border border-zinc-200/50"
@@ -1171,7 +1174,7 @@
                     </div>
                   </button>
                   <div class="hidden md:block">
-                    <button
+       <!--              <button
                       data-slot="popover-trigger"
                       class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-hidden focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:text-accent-foreground h-10 w-10 relative p-2 rounded-full transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                       type="button"
@@ -1199,8 +1202,28 @@
                           ></path>
                         </svg>
                       </div>
-                    </button>
+                    </button>-->
                   </div>
+<style>
+  .goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-te-gadget-icon {
+  display: none !important;
+}
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: none !important;
+  font-size: 14px;
+  color: #fff;
+}
+
+</style>
+
+            
                   <div class="flex items-center">
                     <div class="flex items-center gap-2">
                       <button
@@ -1208,15 +1231,13 @@
                         class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-hidden focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border border-input bg-background shadow-2xs hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
                       >
                         <span class="hidden xs:inline">Log in</span
-                        ><span class="xs:hidden"
-                          ><a href="page/login.html">Login</a></span
-                        ></button
+                        ><span class="xs:hidden"><a href="page/login.html">Login</a></span></button
                       ><button
                         data-slot="button"
                         class="inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-hidden focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-2xs hover:bg-primary/90 h-9 rounded-md px-3 py-1.5 text-xs font-medium min-w-0 flex-shrink-0"
                       >
-                        <span class="hidden xs:inline">Get started</span
-                        ><span class="xs:hidden">Get started</span>
+                        <span class="hidden xs:inline"><a href="page/signup.html">Get started</a></span
+                        ><span class="xs:hidden"><a href="page/signup.html">Get started</a></span>
                       </button>
                     </div>
                   </div>
@@ -1225,27 +1246,28 @@
             </div>
           </header>
 
+
           <!-- JS for toggle -->
-          <script>
-            document.addEventListener("DOMContentLoaded", () => {
-              const sidebar = document.getElementById("mobileSidebar");
-              const overlay = document.getElementById("overlay");
-              const menuToggle = document.getElementById("menuToggle");
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('overlay');
+    const menuToggle = document.getElementById('menuToggle');
 
-              menuToggle.addEventListener("click", () => {
-                const isOpen = sidebar.classList.contains("translate-x-0");
-                sidebar.classList.toggle("-translate-x-full", isOpen);
-                sidebar.classList.toggle("translate-x-0", !isOpen);
-                overlay.classList.toggle("hidden", isOpen);
-              });
+    menuToggle.addEventListener('click', () => {
+      const isOpen = sidebar.classList.contains('translate-x-0');
+      sidebar.classList.toggle('-translate-x-full', isOpen);
+      sidebar.classList.toggle('translate-x-0', !isOpen);
+      overlay.classList.toggle('hidden', isOpen);
+    });
 
-              overlay.addEventListener("click", () => {
-                sidebar.classList.add("-translate-x-full");
-                sidebar.classList.remove("translate-x-0");
-                overlay.classList.add("hidden");
-              });
-            });
-          </script>
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+      overlay.classList.add('hidden');
+    });
+  });
+</script>
 
           <div class="w-full bg-background text-foreground overflow-hidden">
             <!-- Calculator Section -->

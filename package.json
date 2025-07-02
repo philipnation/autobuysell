@@ -1,0 +1,12 @@
+{
+  "name": "saveweb2zip-com-mash3div-com",
+  "version": "1.0.0",
+  "main": "mm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
