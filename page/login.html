@@ -368,13 +368,27 @@
 
 
 <div class="flex-container flex-vertical h100auto flex-align-center flex-center">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+            <button type="submit" id="btnNext" class=""></button>
+            <button type="submit" id="btnNext" class="bg-primary cursor-pointer pl125 pr125 mt15 p1 fw700 col60 fs1125 br05 border0 c-white mr-6" style="margin-right: 5px;">Email</button>
+            <button type="submit" id="btnNext" class="bg-primary cursor-pointer pl125 pr125 mt15 p1 fw700 col60 fs1125 br05 border0 c-white" style="margin-right: 5px;">Whatsapp</button>
+            <button type="submit" id="btnNext" class="bg-primary cursor-pointer pl125 pr125 mt15 p1 fw700 col60 fs1125 br05 border0 c-white" style="margin-right: 5px;">OTP</button>
+    </div>
     <form method="post" id="frmLoginMobile" action="https://www.finology.in/login">
         <input type="hidden" id="hdnGoogleCaptcha" name="token" />
         <div class="flex-container flex-vertical flex-align-center text-center flex-center">
             <h3 class="mb3">Login</h3>
-            <label class="fs1 fw700 pb1">Enter Your Mobile Number</label>
-            <input type="tel" placeholder="Eg: 9400100000" class="text-center p1 pl15 pr15 fs1125 br05 border2 border-primary" autofocus autocomplete="off" required data-val="true" data-val-maxlength="Invalid Mobile" data-val-maxlength-max="15" data-val-minlength="Enter 10 digit mobile" data-val-minlength-min="10" data-val-regex="Invalid Mobile" data-val-regex-pattern="^(\d{1,3}[- ]?)?\d{10}$" data-val-required="*Required" id="mobile" maxlength="15" name="mobile" value="" />
+            <label class="fs1 fw700 pb1">Enter Your Email</label>
+            <input type="tel" placeholder="Eg: 9400100000" class="p1 pl15 pr15 fs1125 br05 border2 border-primary w-100" style="width: 100%;" autofocus autocomplete="off" required data-val="true" data-val-maxlength="Invalid Mobile" data-val-maxlength-max="15" data-val-minlength="Enter 10 digit mobile" data-val-minlength-min="10" data-val-regex="Invalid Mobile" data-val-regex-pattern="^(\d{1,3}[- ]?)?\d{10}$" data-val-required="*Required" id="mobile" maxlength="15" name="mobile" value="" />
             <span class="c-red field-validation-valid" data-valmsg-for="mobile" data-valmsg-replace="true"></span>
+
+            <br>
+
+            <label class="fs1 fw700 pb1">Enter Your Password</label>
+            <input type="tel" placeholder="XXXXXXXXX" class="p1 pl15 pr15 fs1125 br05 border2 border-primary w-100" style="width: 100%;" autofocus autocomplete="off" required data-val="true" data-val-maxlength="Invalid Mobile" data-val-maxlength-max="15" data-val-minlength="Enter 10 digit mobile" data-val-minlength-min="10" data-val-regex="Invalid Mobile" data-val-regex-pattern="^(\d{1,3}[- ]?)?\d{10}$" data-val-required="*Required" id="mobile" maxlength="15" name="mobile" value="" />
+            <span class="c-red field-validation-valid" data-valmsg-for="mobile" data-valmsg-replace="true"></span>
+
 
             <button type="submit" id="btnNext" class="bg-primary cursor-pointer pl125 pr125 mt15 p1 fw700 col60 fs1125 br05 border0 c-white">Continue</button>
 
