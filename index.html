@@ -1078,6 +1078,7 @@
           <header
             class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gradient-to-b from-white/80 to-white/40"
             style="opacity: 1; transform: none"
+            id="header"
           >
             <div class="container mx-auto px-4 lg:px-6">
               <div class="flex items-center justify-between h-16">
@@ -1262,6 +1263,8 @@
     const moonIcon = document.getElementById('moonIcon');
     const sunIcon = document.getElementById('sunIcon');
     const html = document.documentElement;
+    const header = document.getElementById("header");
+
 
     // Check for saved user preference or use system preference
     const savedTheme = localStorage.getItem('theme');
@@ -1272,10 +1275,19 @@
       html.classList.add('dark');
       moonIcon.classList.add('hidden');
       sunIcon.classList.remove('hidden');
+      header.classList.remove('from-white/80');
+      header.classList.remove('to-white/40');
+      header.classList.add('from-black/80');
+      header.classList.add('to-black/40');
+
     } else {
       html.classList.remove('dark');
       moonIcon.classList.remove('hidden');
       sunIcon.classList.add('hidden');
+      header.classList.remove('from-black/80');
+      header.classList.remove('to-black/40');
+      header.classList.add('from-white/80');
+      header.classList.add('to-white/40');
     }
 
     // Toggle theme on button click
@@ -1285,11 +1297,19 @@
         localStorage.setItem('theme', 'light');
         moonIcon.classList.remove('hidden');
         sunIcon.classList.add('hidden');
+        header.classList.remove('from-white/80');
+      header.classList.remove('to-white/40');
+      header.classList.add('from-black/80');
+      header.classList.add('to-black/40');
       } else {
         html.classList.add('dark');
         localStorage.setItem('theme', 'dark');
         moonIcon.classList.add('hidden');
         sunIcon.classList.remove('hidden');
+        header.classList.remove('from-black/80');
+      header.classList.remove('to-black/40');
+      header.classList.add('from-white/80');
+      header.classList.add('to-white/40');
       }
     });
 
@@ -1300,10 +1320,17 @@
           html.classList.add('dark');
           moonIcon.classList.add('hidden');
           sunIcon.classList.remove('hidden');
+          header.classList.remove('to-white/40');
+      header.classList.add('from-black/80');
+      header.classList.add('to-black/40');
         } else {
           html.classList.remove('dark');
           moonIcon.classList.remove('hidden');
           sunIcon.classList.add('hidden');
+          header.classList.remove('from-black/80');
+      header.classList.remove('to-black/40');
+      header.classList.add('from-white/80');
+      header.classList.add('to-white/40');
         }
       }
     });
