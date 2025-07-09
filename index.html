@@ -1265,7 +1265,6 @@
     const html = document.documentElement;
     const header = document.getElementById("header");
 
-
     // Check for saved user preference or use system preference
     const savedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -1279,7 +1278,6 @@
       header.classList.remove('to-white/40');
       header.classList.add('from-black/80');
       header.classList.add('to-black/40');
-
     } else {
       html.classList.remove('dark');
       moonIcon.classList.remove('hidden');
@@ -1297,19 +1295,19 @@
         localStorage.setItem('theme', 'light');
         moonIcon.classList.remove('hidden');
         sunIcon.classList.add('hidden');
-        header.classList.remove('from-white/80');
-      header.classList.remove('to-white/40');
-      header.classList.add('from-black/80');
-      header.classList.add('to-black/40');
+        header.classList.remove('from-black/80');
+        header.classList.remove('to-black/40');
+        header.classList.add('from-white/80');
+        header.classList.add('to-white/40');
       } else {
         html.classList.add('dark');
         localStorage.setItem('theme', 'dark');
         moonIcon.classList.add('hidden');
         sunIcon.classList.remove('hidden');
-        header.classList.remove('from-black/80');
-      header.classList.remove('to-black/40');
-      header.classList.add('from-white/80');
-      header.classList.add('to-white/40');
+        header.classList.remove('from-white/80');
+        header.classList.remove('to-white/40');
+        header.classList.add('from-black/80');
+        header.classList.add('to-black/40');
       }
     });
 
@@ -1321,17 +1319,17 @@
           moonIcon.classList.add('hidden');
           sunIcon.classList.remove('hidden');
           header.classList.remove('from-white/80');
-      header.classList.remove('to-white/40');
-      header.classList.add('from-black/80');
-      header.classList.add('to-black/40');
+          header.classList.remove('to-white/40');
+          header.classList.add('from-black/80');
+          header.classList.add('to-black/40');
         } else {
           html.classList.remove('dark');
           moonIcon.classList.remove('hidden');
           sunIcon.classList.add('hidden');
           header.classList.remove('from-black/80');
-      header.classList.remove('to-black/40');
-      header.classList.add('from-white/80');
-      header.classList.add('to-white/40');
+          header.classList.remove('to-black/40');
+          header.classList.add('from-white/80');
+          header.classList.add('to-white/40');
         }
       }
     });
